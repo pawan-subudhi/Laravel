@@ -1,0 +1,27 @@
+<?php
+
+namespace App\Http\Middleware;
+
+use Closure;
+use Illuminate\Support\Facades\Auth;
+
+class Seeker
+{
+    /**
+     * Handle an incoming request.
+     *
+     * @param  \Illuminate\Http\Request  $request
+     * @param  \Closure  $next
+     * @return mixed
+     */
+    public function handle($request, Closure $next)
+    {
+         // it checks user is logged in or not
+         if(Auth::check() && Auth::user()->user_type == 'seeker'){
+            return $next($request);
+        }
+        else{
+            return redirect('/');//redirect back to welcome.blade.php 
+        }   
+    }
+}
