@@ -59,9 +59,12 @@ Route::post('employer/register','EmployerRegisterController@employerRegister')->
 Route::post('/applications/{id}','JobController@apply')->name('apply');//route for applying jobs
 
 //save and unsave jobs
-Route::post('/save/{id}','FavouriteController@saveJob');
-Route::post('/unsave/{id}','FavouriteController@unSaveJob');
+Route::post('/save/{id}','FavouriteController@saveJob')->name('save');
+Route::post('/unsave/{id}','FavouriteController@unSaveJob')->name('unsave');
 
+//Like and dislike jobs
+Route::post('/like/{id}','LikeController@likeJob')->name('like');
+Route::post('/dislike/{id}','LikeController@dislikeJob')->name('dislike');
 
 //search
 Route::get('/jobs/search','JobController@searchJobs');
@@ -99,3 +102,8 @@ Route::get('testimonial','TestimonialController@index')->middleware('admin');
 Route::get('testimonial/create','TestimonialController@create')->middleware('admin');
 //after creating the testimonial u need to submit so to submit post method and middleware so that only admin can access this
 Route::post('testimonial/create','TestimonialController@store')->name('testimonial.store')->middleware('admin');
+
+
+//Comments
+Route::post('/comment/store', 'CommentController@store')->name('comment.add');
+Route::post('/reply/store', 'CommentController@replyStore')->name('reply.add');

@@ -1,4 +1,9 @@
 @extends('layouts.main')
+<style>
+    .display-comment .display-comment {
+        margin-left: 40px
+    }
+</style>
 @section('content')
 <div class="album text-muted">
     <div class="container">
@@ -28,7 +33,47 @@
             <div class="col-lg-8">
                 <div class="p-4 mb-8 bg-white">
                     <!-- icon-book mr-3-->
-                    <h3 class="h5 text-black mb-3"><i class="fa fa-book" style="color: blue;">&nbsp;</i>Description <a href="#"data-toggle="modal" data-target="#exampleModal1"><i class="fa fa-envelope-square" style="font-size: 34px;float:right;color:green;"></i></a></h3>
+                    <h3 class="h5 text-black mb-3">
+                        <i class="fa fa-book" style="color: blue;">&nbsp;</i>
+                        Description
+                        <span style="float: right;">
+                            @if(Auth::check() && Auth::user()->user_type=='seeker')
+                                @if(!$job->checkLiked())
+                                    <form style="display:inline-block" action="{{route('like',[$job->id])}}" method="POST">@csrf
+                                        <button class="btn" type="submit"style="
+                                                                            font-size: 15px;
+                                                                            margin-bottom: 14px;
+                                        "><i class="fa fa-thumbs-o-up ">&nbsp;</i></button>  
+                                    </form>
+                                @else
+                                    <form style="display:inline-block" action="{{route('dislike',[$job->id])}}" method="POST">@csrf
+                                        <button class="btn" type="submit"style="
+                                                                            font-size: 15px;
+                                                                            margin-bottom: 14px;
+                                        "><i class="fa fa-thumbs-up" style="color:blue;">&nbsp;</i></button>  
+                                    </form>
+                                @endif
+                                @if(!$job->checkSaved())
+                                    <form style="display:inline-block" action="{{route('save',[$job->id])}}" method="POST">@csrf
+                                        <button class="btn" type="submit"style="
+                                                                            font-size: 15px;
+                                                                            margin-bottom: 14px;
+                                        "><i class="fa fa-bookmark-o">&nbsp;</i></button>  
+                                    </form>
+                                @else 
+                                    <form style="display:inline-block;" action="{{route('unsave',[$job->id])}}" method="POST">@csrf
+                                        <button class="btn" type="submit"style="
+                                                                            font-size: 15px;
+                                                                            margin-bottom: 14px;
+                                        "><i class="fa fa-bookmark" style="color: red;">&nbsp;</i></button>  
+                                    </form>
+                                @endif
+                            @endif  
+                            <a href="#"data-toggle="modal" data-target="#exampleModal1">
+                                <i class="fa fa-envelope-square" style="font-size: 34px;color:green;"></i>
+                            </a>
+                        </span>
+                    </h3>
                     <p> {{$job->description}}.</p>
                 </div>
                 <div class="p-4 mb-8 bg-white">
@@ -67,12 +112,14 @@
                 <p>
                     @if(Auth::check() && Auth::user()->user_type=='seeker')
                         @if(!$job->checkApplication())
-                            <apply-component :jobid={{$job->id}}></apply-component>
-                        @else
-                            <center><span style="color: #000;">You applied this job</span></center>
+                            <form action="{{route('apply',[$job->id])}}" method="POST">@csrf
+                                <button class="btn btn-success" style="width: 100%" type="submit">Apply</button>  
+                            </form>
+                        @else 
+                            <div class="alert alert-success">
+                                Application sent succesfully
+                            </div>
                         @endif
-                        <br>
-                        <favourite-component :jobid={{$job->id}} :favourited={{$job->checkSaved()?'true':'false'}}></favourite-component>
                     @else
                         Please login to apply this job
                     @endif
@@ -128,6 +175,19 @@
             </div>
 
         </div>
+        <h4>Add comment</h4>
+        <form method="POST" action="{{ route('comment.add') }}">
+            @csrf
+            <div class="form-group">
+                <input type="text" name="comment_body" class="form-control" />
+                <input type="hidden" name="job_id" value="{{$job->id}}" />
+            </div>
+            <div class="form-group">
+                <input type="submit" class="btn btn-warning" value="Add Comment" />
+            </div>
+        </form>
+        <hr />
+        @include('partials._comment_replies', ['comments' => $comments, 'job_id' => $job->id])
         <br>
         <br>
         <br>

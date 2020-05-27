@@ -33,7 +33,8 @@ class DatabaseSeeder extends Seeder
             Category::create(['name'=>$category]);
         }
 
-        //create a role in rols table
+        //create a role in roles table
+        //Role::truncate();
         $adminRole = Role::create([
             'name' =>'admin'
         ]);

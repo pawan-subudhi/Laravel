@@ -6,6 +6,7 @@ use App\Job;
 use App\Post;
 use App\Company;
 use App\Category;
+use App\Comment;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use App\Http\Requests\JobPostRequest;//this contains the validation rules for the job form if we follow this method of validation the pass jobpostrequest as a parameter inside store method
@@ -39,9 +40,10 @@ class JobController extends Controller
     //we have used route model bindings
     public function show($id,Job $job){
         $jobRecommendations = $this->jobRecommendations($job);
+        $comments = Comment::where('commentable_id',$id)->get();
         //we will be showing jobs using slug not by id so need to create a getRouteKeyName()
         //you can do alternate to writing Job class inside the paramater is inside the function $job =Job::find($id)
-        return view('jobs.show',compact('job','jobRecommendations'));
+        return view('jobs.show',compact('job','jobRecommendations','comments'));
     }
 
     //job recommendation 

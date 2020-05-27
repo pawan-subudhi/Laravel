@@ -7,7 +7,6 @@ use Illuminate\Database\Eloquent\Model;
 class Job extends Model
 {
     protected $guarded = [];
-    
     // the user id and comppany id are not coming from form so they need to be placed in fillable if it would have came from form then the gurded would have worked fine
     // protected $fillable = [
     //     'user_id',
@@ -35,7 +34,7 @@ class Job extends Model
     }
 
     //realtionships b/w jobs and users i.e a user can favourite many jobs 
-    //here the writing style is diferent than compared to users realtion as ther laravel knows the pivot table name is what and andall as the rules are followed for writing the pivot table name but in this it's not so we are expilctly mentioning the tale name and id's
+    //here the writing style is diferent than compared to users realtion as ther laravel knows the pivot table name is what and and all as the rules are followed for writing the pivot table name but in this it's not so we are expilctly mentioning the table name and id's
     public function favourites(){
         return $this->belongsToMany(Job::class,'favourites','job_id','user_id')->withTimeStamps();
     }
@@ -44,4 +43,20 @@ class Job extends Model
     public function checkSaved(){
         return \DB::table('favourites')->where('user_id',auth()->user()->id)->where('job_id',$this->id)->exists();
     }
+
+    //Relationships b/w likes and users     
+    public function likes(){
+        return $this->belongsToMany(Job::class,'likes','job_id','user_id')->withTimeStamps();
+    }
+
+    public function checkLiked(){
+        return \DB::table('likes')->where('user_id',auth()->user()->id)->where('job_id',$this->id)->exists();
+    }
+
+    //relationships between the model comments
+    public function comments(){
+        return $this->morphMany(Comment::class, 'commentable')->whereNull('parent_id');
+    }
+
 }
+ 
