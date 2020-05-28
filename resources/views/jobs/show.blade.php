@@ -1,9 +1,4 @@
 @extends('layouts.main')
-<style>
-    .display-comment .display-comment {
-        margin-left: 40px
-    }
-</style>
 @section('content')
 <div class="album text-muted">
     <div class="container">
@@ -38,36 +33,17 @@
                         Description
                         <span style="float: right;">
                             @if(Auth::check() && Auth::user()->user_type=='seeker')
-                                @if(!$job->checkLiked())
-                                    <form style="display:inline-block" action="{{route('like',[$job->id])}}" method="POST">@csrf
-                                        <button class="btn" type="submit"style="
-                                                                            font-size: 15px;
-                                                                            margin-bottom: 14px;
-                                        "><i class="fa fa-thumbs-o-up ">&nbsp;</i></button>  
-                                    </form>
-                                @else
-                                    <form style="display:inline-block" action="{{route('dislike',[$job->id])}}" method="POST">@csrf
-                                        <button class="btn" type="submit"style="
-                                                                            font-size: 15px;
-                                                                            margin-bottom: 14px;
-                                        "><i class="fa fa-thumbs-up" style="color:blue;">&nbsp;</i></button>  
-                                    </form>
-                                @endif
-                                @if(!$job->checkSaved())
-                                    <form style="display:inline-block" action="{{route('save',[$job->id])}}" method="POST">@csrf
-                                        <button class="btn" type="submit"style="
-                                                                            font-size: 15px;
-                                                                            margin-bottom: 14px;
-                                        "><i class="fa fa-bookmark-o">&nbsp;</i></button>  
-                                    </form>
-                                @else 
-                                    <form style="display:inline-block;" action="{{route('unsave',[$job->id])}}" method="POST">@csrf
-                                        <button class="btn" type="submit"style="
-                                                                            font-size: 15px;
-                                                                            margin-bottom: 14px;
-                                        "><i class="fa fa-bookmark" style="color: red;">&nbsp;</i></button>  
-                                    </form>
-                                @endif
+
+                                <button class="btn btn-submit-like" style="
+                                                                    font-size: 15px;
+                                                                    margin-bottom: 14px;
+                                "><i class="fa fa-thumbs-up" id="like-button" style="color: <?php echo !$job->checkLiked()? 'black': 'red'?>">&nbsp;</i></button>  
+                         
+                                <button class="btn btn-submit-favourite" style="
+                                                                    font-size: 15px;
+                                                                    margin-bottom: 14px;
+                                "><i class="fa fa-bookmark" id="favourite-button" style="color: <?php echo !$job->checkSaved()? 'black': 'red'?>">&nbsp;</i></button>  
+                                
                             @endif  
                             <a href="#"data-toggle="modal" data-target="#exampleModal1">
                                 <i class="fa fa-envelope-square" style="font-size: 34px;color:green;"></i>
@@ -111,17 +87,14 @@
                 <p><a href="{{route('company.index',[$job->company->id,$job->company->slug])}}" class="btn btn-warning" style="width: 100%;">Visit Company Page</a></p>
                 <p>
                     @if(Auth::check() && Auth::user()->user_type=='seeker')
-                        @if(!$job->checkApplication())
-                            <form action="{{route('apply',[$job->id])}}" method="POST">@csrf
-                                <button class="btn btn-success" style="width: 100%" type="submit">Apply</button>  
-                            </form>
-                        @else 
-                            <div class="alert alert-success">
-                                Application sent succesfully
-                            </div>
-                        @endif
+                        <button class="btn btn-success btn-submit-apply" style="width: 100%" <?php echo $job->checkApplication() ? 'disabled' : 'enabled'?>>Apply</button>  
+                        <div class="alert alert-success" id="application-status" style="text-align: center;display:<?php echo $job->checkApplication() ? 'block' : 'none'?>;">
+                            Applied
+                        </div>
                     @else
-                        Please login to apply this job
+                        <div class="alert alert-success" style="text-align: center;">
+                            Please login to apply this job
+                        </div>
                     @endif
                 </p>
                 <!-- Modal to share job link -->
@@ -176,10 +149,10 @@
 
         </div>
         <h4>Add comment</h4>
-        <form method="POST" action="{{ route('comment.add') }}">
+        <form method="POST" action="{{ route('comment.store')}}">
             @csrf
             <div class="form-group">
-                <input type="text" name="comment_body" class="form-control" />
+                <textarea class="form-control" name="body"></textarea>
                 <input type="hidden" name="job_id" value="{{$job->id}}" />
             </div>
             <div class="form-group">
@@ -187,7 +160,7 @@
             </div>
         </form>
         <hr />
-        @include('partials._comment_replies', ['comments' => $comments, 'job_id' => $job->id])
+        @include('partials.commentDisplay', ['comments' => $job->comments, 'job_id' => $job->id])
         <br>
         <br>
         <br>

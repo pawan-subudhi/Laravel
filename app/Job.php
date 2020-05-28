@@ -53,10 +53,9 @@ class Job extends Model
         return \DB::table('likes')->where('user_id',auth()->user()->id)->where('job_id',$this->id)->exists();
     }
 
-    //relationships between the model comments
-    public function comments(){
-        return $this->morphMany(Comment::class, 'commentable')->whereNull('parent_id');
+    public function comments()
+    {
+        return $this->hasMany(Comment::class)->whereNull('parent_id');
     }
-
 }
  

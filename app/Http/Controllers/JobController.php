@@ -4,13 +4,14 @@ namespace App\Http\Controllers;
 
 use App\Job;
 use App\Post;
+use App\Comment;
 use App\Company;
 use App\Category;
-use App\Comment;
+use App\Testimonial;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Auth;
 use App\Http\Requests\JobPostRequest;//this contains the validation rules for the job form if we follow this method of validation the pass jobpostrequest as a parameter inside store method
-use App\Testimonial;
 
 class JobController extends Controller
 {
@@ -40,10 +41,9 @@ class JobController extends Controller
     //we have used route model bindings
     public function show($id,Job $job){
         $jobRecommendations = $this->jobRecommendations($job);
-        $comments = Comment::where('commentable_id',$id)->get();
         //we will be showing jobs using slug not by id so need to create a getRouteKeyName()
         //you can do alternate to writing Job class inside the paramater is inside the function $job =Job::find($id)
-        return view('jobs.show',compact('job','jobRecommendations','comments'));
+        return view('jobs.show',compact('job','jobRecommendations'));
     }
 
     //job recommendation 
@@ -130,7 +130,8 @@ class JobController extends Controller
         $jobId = Job::find($id);
         //attach the logged in user id
         $jobId->users()->attach(Auth::user()->id);
-        return redirect()->back()->with('message','Application sent!');
+        // return redirect()->back()->with('message','Application sent!');
+        return 'true';
     }
 
     public function applicant(){
@@ -143,12 +144,10 @@ class JobController extends Controller
         
         //front search
         $search = $request->get('search');
-        $address = $request->get('address');
-        if($address && $search){
+        if($search){
             $jobs = Job::where('position','LIKE','%'.$search.'%')
                         ->orWhere('title','LIKE','%'.$search.'%')
                         ->orWhere('type','LIKE','%'.$search.'%')
-                        ->orWhere('address','LIKE','%'.$address.'%')
                         ->paginate(10);
             return view('jobs.alljobs',compact('jobs'));
         }
@@ -157,7 +156,6 @@ class JobController extends Controller
         $type = $request->get('type');
         $category = $request->get('catrgory_id');
         $address = $request->get('address');
-        
         //if the user has clicked the search button then perform this search
         if($keyword || $type || $category || $address){
             //DB::enableQueryLog(); // Enable query log

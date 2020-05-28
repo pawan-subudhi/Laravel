@@ -105,5 +105,5 @@ Route::post('testimonial/create','TestimonialController@store')->name('testimoni
 
 
 //Comments
-Route::post('/comment/store', 'CommentController@store')->name('comment.add');
-Route::post('/reply/store', 'CommentController@replyStore')->name('reply.add');
+Route::post('/comment/store', 'CommentController@store')->name('comment.store');
+// Route::post('/reply/store', 'CommentController@replyStore')->name('reply.add');

@@ -1,5 +1,9 @@
 @extends('layouts.main')
-
+<style>
+  .form-inline .form-control {
+    width: 159px !important;
+}
+</style>
 @section('content')
 <div class="container">
     <div class="row">
@@ -39,7 +43,7 @@
             </div>
         </div>
      </form>
-        <div class="col-md-12">
+        <div class="col-md-12 my-4">
         <div class="rounded border jobs-wrap">
             @if(count($jobs)>0)
                 @foreach($jobs as $job)
@@ -79,7 +83,7 @@
 
             @endforeach
             @else
-            No jobs found
+            <h4 style="text-align: center;color: black;"><strong>No jobs found</strong></h4>
             @endif
 
 
