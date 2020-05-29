@@ -9,40 +9,41 @@
                 <div class="card">
                     <div class="card-header">
                         <a href="{{route('jobs.show',[$applicant->id,$applicant->slug])}}">
-                            {{$applicant->title}}
+                            <strong>{{$applicant->title}}</strong>
                         </a>
                     </div>
 
                     <div class="card-body">
-                        @foreach($applicant->users as $user)
-                        <table class="table">
-                            <thead>
-                              <tr>
-                                <th></th>
-                                <th></th>
-                                <th></th>
-                                <th></th>
-                                <th></th>
-                                <th></th>
-                                <th></th>
-                                <th></th>
-                              </tr>
-                            </thead>
+                        <table class="table table-striped">
                             <tbody>
-                              <tr>
-                                <td>Name:{{$user->name}}</td>
-                                <td>Email:{{$user->email}}</td>
-                                <td>Address:{{$user->profile->address}}</td>
-                                <td>Gender:{{$user->profile->gender}}</td>
-                                <td>Bio:{{$user->profile->bio}}</td>
-                                <td>Experience:{{$user->profile->experience}}</td>
-                                <td><a href="{{Storage::url($user->profile->resume)}}">Resume</a></td>
-                                <td><a href="{{Storage::url($user->profile->cover_letter)}}">Cover Letter</a></td>
-                              </tr>
+                                <thead>
+                                    <tr>
+                                      <th><strong>Name</strong></th>
+                                      <th><strong>Email</strong></th>
+                                      <th><strong>Address</strong></th>
+                                      <th><strong>Gender</strong></th>
+                                      <th><strong>Bio</strong></th>
+                                      <th><strong>Experience</strong></th>
+                                      <th><strong>Resume</strong></th>
+                                      <th><strong>Cover Letter</strong></th>
+                                      
+                                    </tr>
+                                  </thead>
+                                @foreach($applicant->users as $user)
+                                    <tr>
+                                        <td>{{$user->name}}</td>
+                                        <td>{{$user->email}}</td>
+                                        <td>{{$user->profile->address}}</td>
+                                        <td>{{$user->profile->gender}}</td>
+                                        <td>{{$user->profile->bio}}</td>
+                                        <td>{{$user->profile->experience}}</td>
+                                        <td><a href="{{Storage::url($user->profile->resume)}}">Resume</a></td>
+                                        <td><a href="{{Storage::url($user->profile->cover_letter)}}">Cover Letter</a></td>
+                                    </tr>
+                                @endforeach
                             </tbody>
                         </table>
                     </div>
-                        @endforeach
                 </div> 
                 <br>
             @endforeach

@@ -101,7 +101,7 @@
           });
   </script>
 
-<!-- for like, bookmark button and apply button  -->
+<!--for like, bookmark button and apply button  -->
 {{-- <script type="text/javascript">
   $.ajaxSetup({
    headers: {
@@ -164,4 +164,4 @@ $(".btn-submit-apply").click(function(e){
  });
  });
 
-</script> --}}
+</script>  --}}

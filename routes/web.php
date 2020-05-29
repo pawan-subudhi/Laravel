@@ -26,6 +26,7 @@ use App\Http\Controllers\JobController;
 Auth::routes(['verify'=>true]);
 
 Route::get('/home', 'HomeController@index')->name('home');
+Route::get('/home/appliedJobs', 'HomeController@showAppliedJobs')->name('appliedJobs');
 
 //Job controller
 Route::get('/','JobController@index');
@@ -79,7 +80,7 @@ Route::get('/companies','CompanyController@company')->name('company');
 Route::post('/job/mail','EmailController@send')->name('mail');
 
 //admin
-Route::get('/dashboard','DashboardController@index')->middleware('admin');
+Route::get('/dashboard','DashboardController@index')->name('dashboard')->middleware('admin');
 Route::get('/dashboard/create','DashboardController@create')->middleware('admin');  
 Route::post('/dashboard/create','DashboardController@store')->name('post.store')->middleware('admin');  
 Route::post('/dashboard/destroy','DashboardController@destroy')->name('post.delete')->middleware('admin'); 
@@ -106,4 +107,6 @@ Route::post('testimonial/create','TestimonialController@store')->name('testimoni
 
 //Comments
 Route::post('/comment/store', 'CommentController@store')->name('comment.store');
-// Route::post('/reply/store', 'CommentController@replyStore')->name('reply.add');
+
+//contact
+Route::get('/contact', 'ContactController@contact')->name('contact');

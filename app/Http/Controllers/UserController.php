@@ -21,8 +21,7 @@ class UserController extends Controller
             'address'  => 'required',
             'bio' => 'required|min:20',
             'experience' => 'required|min:6',
-            // 'phone_number' => 'required|min:10|numeric',
-            'phone_number' => 'required|regex:/[0-9]{10}/',
+            'phone_number' => 'required|unique:users_phone_number|numeric',
         ]);
 
         //$request->get('address') and request('address') are both same

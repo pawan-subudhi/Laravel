@@ -7,13 +7,18 @@
     <!-- CSRF Token -->
     <meta name="csrf-token" content="{{ csrf_token() }}">
 
-    <title>{{ config('app.name', 'Laravel') }}</title>
+    <title>{{ config('app.name', 'JobFinder') }}</title>
 
     <!-- Scripts -->
     <script defer src="{{ asset('js/app.js') }}"></script>
     <script src="https://code.jquery.com/jquery-1.12.4.js"></script>
     <script defer src="https://code.jquery.com/ui/1.12.1/jquery-ui.js"></script>
     <script>
+        $(document).ready(function(){
+            $('#datepicker').datepicker({
+                dateFormat: "yy-mm-dd"
+            });
+        })
         $( function() {
           $( "#datepicker" ).datepicker();
         } );
@@ -100,11 +105,16 @@
                                         <a class="dropdown-item" href="{{route('user.profile')}}">
                                             {{ __('Profile') }}
                                         </a>
+                                        <a class="dropdown-item" href="{{route('appliedJobs')}}">
+                                            {{ __('Applied jobs') }}
+                                        </a>
                                         <a class="dropdown-item" href="{{route('home')}}">
                                             {{ __('Saved jobs') }}
                                         </a>
                                     @else 
-                                        
+                                        <a class="dropdown-item" href="{{route('dashboard')}}">
+                                            {{ __('Dashboard') }}
+                                        </a>
                                     @endif
                                     <a class="dropdown-item" href="{{ route('logout') }}"
                                        onclick="event.preventDefault();

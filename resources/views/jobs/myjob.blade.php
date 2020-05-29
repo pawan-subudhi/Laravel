@@ -3,50 +3,43 @@
 @section('content')
 <div class="container">
     <div class="row justify-content-center">
-        <div class="col-md-8">
+        <div class="col-md-10">
             <div class="card">
                 <div class="card-header">Dashboard</div>
 
                 <div class="card-body">
                     <table class="table">
-                        <thead>
-                            <th></th>
-                            <th></th>
-                            <th></th>
-                            <th></th>
-                            <th></th>
-                        </thead>
                         <tbody>
                             @foreach ( $jobs as $job )
                                 <tr>
-                                    <td>
+                                    <td width="20%">
                                         @if(empty(Auth::user()->company->logo))
-                                            <img src="{{asset('avatar/man1.jpg')}}" alt="company logo" width="100" style="width: 50%;">
+                                            <img src="{{asset('avatar/man.jpg')}}" alt="company logo" width="100">
                                         @else 
-                                            <img src="{{asset('uploads/logo')}}/{{Auth::user()->company->logo}}" alt="Company logo" width="100" style="width:50%">
+                                            <img src="{{asset('uploads/logo')}}/{{Auth::user()->company->logo}}" alt="Company logo" width="100">
                                         @endif
                                     </td>
-                                    <td>
+                                    <td width="20%">
                                         Position:{{$job->position}}
                                         <br>
                                         <i class="fa fa-clock-o" aria-hidden="true"></i>&nbsp;{{$job->type}}
                                     </td>
-                                    <td> 
+                                    <td width="20%"> 
                                         <i class="fa fa-map-marker" aria-hidden="true"></i>
-                                        &nbsp;Address:{{$job->address}}
+                                        &nbsp;Address:<br>
+                                        {{$job->address}}
                                     </td>
-                                    <td>
+                                    <td width="20%">
                                         <i class="fa fa-globe" aria-hidden="true"></i>
-                                        &nbsp;Date:{{$job->created_at->diffForHumans()}}
+                                        &nbsp;Date:<br>
+                                        {{$job->created_at->diffForHumans()}}
                                     </td>
-                                    <td>
+                                    <td width="20%">
                                         <a href="{{route('jobs.show',[$job->id,$job->slug])}}">
                                             <button class="btn btn-success p-2">Read</button>
                                         </a>
-                                        <br>
-                                        <br>
                                         <a href="{{route('job.edit',[$job->id])}}">
-                                            <button class="btn btn-dark ">Edit</button>
+                                            <button class="btn btn-dark p-2">Edit</button>
                                         </a>
                                     </td>
                                 </tr>

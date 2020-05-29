@@ -160,11 +160,12 @@ class JobController extends Controller
         if($keyword || $type || $category || $address){
             //DB::enableQueryLog(); // Enable query log
             $jobs = Job::where('title','LIKE','%'.$keyword.'%')
-                       ->orWhere('type',$type)
+                       ->orWhere('type','LIKE','%'.$type.'%')
                        ->orWhere('category_id',$category)
                        ->orWhere('address','LIKE','%'.$address.'%')
                        ->paginate(10);
             //dd(DB::getQueryLog()); // Show results of log
+            //dd($jobs);
             return view('jobs.alljobs',compact('jobs'));
          } else{
                 //paginate and display

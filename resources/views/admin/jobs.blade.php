@@ -1,7 +1,7 @@
 @extends('layouts.app')
 @section('content')
 <div class="container">
-    <h1>All Jobs</h1><span style="float:right;"><a href="/dashboard">Back</a></span>
+    <h1>All Jobs</h1><span style="float:right;"><a class="btn btn-success"href="/dashboard">Back</a></span>
     @if(Session::has('message'))
         <div class="alert alert-success">
         {{Session::get('message')}}
@@ -38,7 +38,7 @@
                                       </td>
                                     <td>{{$job->company->cname}}</td>
                                     <td>
-                                        <a href="{{route('job.show',[$job->id,$job->slug])}}" target="_blank">
+                                        <a href="{{route('jobs.show',[$job->id,$job->slug])}}" target="_blank">
                                             Read
                                         </a>
                                     </td>

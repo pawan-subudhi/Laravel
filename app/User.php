@@ -55,6 +55,11 @@ class User extends Authenticatable implements MustVerifyEmail
         return $this->belongsToMany(Job::class,'favourites','user_id','job_id')->withTimeStamps();
     }
 
+    //Relationship for applied jobs user_id is primary key of this table and job_id is the foriegn key in our applied jobs table
+    public function appliedJobs(){
+        return $this->belongsToMany(Job::class,'job_user','user_id','job_id')->withTimeStamps();
+    }
+
     //roles relationships
     public function roles(){
         return $this->belongsToMany(Role::class);

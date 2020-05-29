@@ -6,7 +6,7 @@
             <div class="img-border">
               <a href="https://vimeo.com/{{$testimonial->video_id}}" class="popup-vimeo image-play">
                 <span class="icon-wrap">
-                  <span class="icon icon-play"></span>
+                  <span class="fa fa-play"></span>
                 </span>
                 <img src="external/images/hero_2.jpg" alt="Image" class="img-fluid rounded">
               </a>
