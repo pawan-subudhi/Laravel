@@ -3,7 +3,9 @@
 namespace App\Http\Controllers;
 
 use App\Profile;
+use Twilio\Rest\Client;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 
 class UserController extends Controller
 {
@@ -21,8 +23,18 @@ class UserController extends Controller
             'address'  => 'required',
             'bio' => 'required|min:20',
             'experience' => 'required|min:6',
-            'phone_number' => 'required|unique:users_phone_number|numeric',
+            'phone_number' => 'required|numeric',
         ]);
+
+        /* Get credentials from .env */
+        $token = "";
+        $twilio_sid = "";
+        $twilio_verify_sid = "";
+        
+        $twilio = new Client($twilio_sid, $token);
+        $twilio->verify->v2->services($twilio_verify_sid)
+            ->verifications
+            ->create(request('phone_number'), "sms");
 
         //$request->get('address') and request('address') are both same
         //to get information of current logged in user is using auth 
@@ -33,7 +45,29 @@ class UserController extends Controller
             'bio' => request('bio'),
             'phone_number' => request('phone_number'),
         ]);
-        return redirect()->back()->with('message','Profile successfully Updated!');
+        return redirect()->back()->with(['message'=>'Profile successfully Updated!','phone_number' => request('phone_number')]);
+    }
+
+    protected function verify(Request $request)
+    {
+        $data = $request->validate([
+            'verification_code' => ['required', 'numeric'],
+            'phone_number' => ['required', 'string'],
+        ]);
+        /* Get credentials from .env */
+        $token = "";
+        $twilio_sid = "";
+        $twilio_verify_sid = "";
+        $twilio = new Client($twilio_sid, $token);
+        $verification = $twilio->verify->v2->services($twilio_verify_sid)
+            ->verificationChecks
+            ->create(request('verification_code'), array('to' => request('phone_number')));
+        if ($verification->valid) {
+            $user = tap(Profile::where('phone_number', request('phone_number')))->update(['isVerified' => true]);
+            /* Authenticate user */
+            return redirect()->back()->with('message','Phone number verified');
+        }
+        return back()->with(['phone_number' => request('phone_number'), 'error' => 'Invalid verification code entered!']);
     }
 
     public function coverletter(Request $request){

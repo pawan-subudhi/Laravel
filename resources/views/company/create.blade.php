@@ -40,7 +40,7 @@
                         @csrf
                         <div class="form-group">
                             <label for="">Address</label>
-                            <input type="text" name="address" value="{{Auth::user()->company->address}}" class="form-control @error('company_logo') is-invalid @enderror">
+                            <input type="text" name="address" value="<?php echo Auth::user()->company->address? Auth::user()->company->address : old('address') ?>" class="form-control @error('company_logo') is-invalid @enderror">
                             @error('address')
                                 <span class="invalid-feedback" role="alert">
                                     <strong>{{ $message }}</strong>
@@ -50,7 +50,7 @@
                         
                         <div class="form-group">
                             <label for="">Phone</label>
-                            <input type="text" name="phone" value="{{Auth::user()->company->phone}}" class="form-control @error('phone') is-invalid @enderror">
+                            <input type="text" name="phone" value="<?php echo Auth::user()->company->phone? Auth::user()->company->phone : old('phone') ?>" class="form-control @error('phone') is-invalid @enderror">
                             @error('phone')
                                 <span class="invalid-feedback" role="alert">
                                     <strong>{{ $message }}</strong>
@@ -60,7 +60,7 @@
 
                         <div class="form-group">
                             <label for="">Website</label>
-                            <input type="text" name="website" value="{{Auth::user()->company->website}}" class="form-control @error('website') is-invalid @enderror">
+                            <input type="text" name="website" value="<?php echo Auth::user()->company->website? Auth::user()->company->website : old('website') ?>" class="form-control @error('website') is-invalid @enderror">
                             @error('website')
                                 <span class="invalid-feedback" role="alert">
                                     <strong>{{ $message }}</strong>
@@ -70,7 +70,7 @@
 
                         <div class="form-group">
                             <label for="">Slogan</label>
-                            <input type="text" name="slogan" value="{{Auth::user()->company->slogan}}"class="form-control @error('slogan') is-invalid @enderror">
+                            <input type="text" name="slogan" value="<?php echo Auth::user()->company->slogan? Auth::user()->company->slogan : old('slogan') ?>"class="form-control @error('slogan') is-invalid @enderror">
                             @error('slogan')
                                 <span class="invalid-feedback" role="alert">
                                     <strong>{{ $message }}</strong>
@@ -80,7 +80,7 @@
 
                         <div class="form-group">
                             <label for="">Description</label>
-                            <textarea name="description" class="form-control @error('description') is-invalid @enderror">{{Auth::user()->company->description}}</textarea>
+                            <textarea name="description" class="form-control @error('description') is-invalid @enderror"><?php echo Auth::user()->company->description? Auth::user()->company->description : old('description') ?></textarea>
                             @error('description')
                                 <span class="invalid-feedback" role="alert">
                                     <strong>{{ $message }}</strong>

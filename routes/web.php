@@ -110,3 +110,6 @@ Route::post('/comment/store', 'CommentController@store')->name('comment.store');
 
 //contact
 Route::get('/contact', 'ContactController@contact')->name('contact');
+
+//verify the number
+Route::post('/verify', 'UserController@verify')->name('verify');

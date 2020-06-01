@@ -23,7 +23,6 @@
             <div class="title" style="margin-top: 20px;">
                 <h2>{{$job->title}}</h2> 
             </div>
-
             <img src="{{asset('hero-job-image.jpg')}}" style="width: 100%;">
             <div class="col-lg-8">
                 <div class="p-4 mb-8 bg-white">
@@ -33,16 +32,20 @@
                         Description
                         <span style="float: right;">
                             @if(Auth::check() && Auth::user()->user_type=='seeker')
-
-                                <button class="btn btn-submit-like" style="
-                                                                    font-size: 15px;
-                                                                    margin-bottom: 14px;
-                                "><i class="fa fa-thumbs-up" id="like-button" style="color: <?php echo !$job->checkLiked()? 'black': 'red'?>">&nbsp;</i></button>  
+                                
+                                <button class="btn btn-submit-like" 
+                                        style=" font-size: 15px;
+                                                margin-bottom: 14px;"
+                                        data-id=<?php echo $job->id ?>
+                                        data-url=<?php echo !$job->checkLiked()? "http://jobportal.com/like/" : "http://jobportal.com/dislike/"?>
+                                ><i class="fa fa-thumbs-up" id="like-button" style="color: <?php echo !$job->checkLiked()? 'black': 'red'?>">&nbsp;</i></button>  
                          
-                                <button class="btn btn-submit-favourite" style="
-                                                                    font-size: 15px;
-                                                                    margin-bottom: 14px;
-                                "><i class="fa fa-bookmark" id="favourite-button" style="color: <?php echo !$job->checkSaved()? 'black': 'red'?>">&nbsp;</i></button>  
+                                <button class="btn btn-submit-favourite" 
+                                        style="font-size: 15px;
+                                                margin-bottom: 14px;"
+                                        data-id=<?php echo $job->id ?>
+                                        data-url=<?php echo !$job->checkSaved()? "http://jobportal.com/save/" : "http://jobportal.com/unsave/"?>
+                                ><i class="fa fa-bookmark" id="favourite-button" style="color: <?php echo !$job->checkSaved()? 'black': 'red'?>">&nbsp;</i></button>  
                                 
                             @endif  
                             <a href="#"data-toggle="modal" data-target="#exampleModal1">
@@ -87,7 +90,11 @@
                 <p><a href="{{route('company.index',[$job->company->id,$job->company->slug])}}" class="btn btn-warning" style="width: 100%;">Visit Company Page</a></p>
                 <p>
                     @if(Auth::check() && Auth::user()->user_type=='seeker')
-                        <button class="btn btn-success btn-submit-apply" style="width: 100%" <?php echo $job->checkApplication() ? 'disabled' : 'enabled'?>>Apply</button>  
+                        <button class="btn btn-success btn-submit-apply" 
+                                style="width: 100%" <?php echo $job->checkApplication() ? 'disabled' : 'enabled'?>
+                                data-id=<?php echo $job->id ?>
+                                data-url="http://jobportal.com//applications/"
+                        >Apply</button>  
                         <div class="alert alert-success" id="application-status" style="text-align: center;display:<?php echo $job->checkApplication() ? 'block' : 'none'?>;">
                             Applied
                         </div>

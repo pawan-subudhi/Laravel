@@ -40,7 +40,7 @@
                         @csrf
                         <div class="form-group">
                             <label for="">Address</label>
-                            <input type="text" name="address" value="{{Auth::user()->profile->address}}"  class="form-control">
+                            <input type="text" name="address" value="<?php echo Auth::user()->profile->address? Auth::user()->profile->address : old('address') ?>"  class="form-control">
                             
                             {{-- check if any errors then display error using $error variable which laravel provides--}}
                             @if($errors->has('address'))
@@ -53,7 +53,7 @@
                         
                         <div class="form-group">
                             <label for="">Phone number</label>
-                            <input type="text" name="phone_number" value="{{Auth::user()->profile->phone_number}}"  class="form-control">
+                            <input type="text" name="phone_number" value="<?php echo Auth::user()->profile->phone_number? Auth::user()->profile->phone_number : old('phone_number') ?>"  class="form-control">
 
                             @if($errors->has('phone_number'))
                                 <div class="error" style="color:red;">
@@ -64,7 +64,7 @@
 
                         <div class="form-group">
                             <label for="">Experience</label>
-                            <textarea name="experience" class="form-control">{{Auth::user()->profile->experience}}</textarea>
+                            <textarea name="experience" class="form-control"><?php echo Auth::user()->profile->experience? Auth::user()->profile->experience : old('experience') ?></textarea>
 
                             @if($errors->has('experience'))
                                 <div class="error" style="color:red;">
@@ -75,7 +75,7 @@
 
                         <div class="form-group">
                             <label for="">Bio</label>
-                            <textarea name="bio" class="form-control">{{Auth::user()->profile->bio}}</textarea>
+                            <textarea name="bio" class="form-control"><?php echo Auth::user()->profile->bio? Auth::user()->profile->bio : old('bio') ?></textarea>
 
                             @if($errors->has('bio'))
                                 <div class="error" style="color:red;">
@@ -90,10 +90,54 @@
                     </form>
                 </div>
             </div>
-            @if(Session::has('message'))
-                <div class="alert alert-success">
-                    {{Session::get('message')}}
+            @if(Session::get('message') === 'Profile successfully Updated!')
+            <div class="container"   style="
+                                            position: fixed;
+                                            top: 30%;
+                                            left: 4%;
+                                            z-index: 999;"
+            >
+                <div class="row justify-content-center">
+                    <div class="col-md-8">
+                        <div class="card">
+                            <div class="card-header">Verify Your Phone Number</div>
+                            <div class="card-body">
+                                @if (Session::get('error'))
+                                <div class="alert alert-danger" role="alert">
+                                    {{Session::get('error')}}
+                                </div>
+                                @endif
+                                Please enter the OTP sent to your number: {{Session::get('phone_number')}}
+                                <form action="{{route('verify')}}" method="post">
+                                    @csrf
+                                    <div class="form-group row">
+                                        <label for="verification_code"
+                                            class="col-md-4 col-form-label text-md-right">{{ __('Phone Number') }}</label>
+                                        <div class="col-md-6">
+                                            <input type="hidden" name="phone_number" value="{{Session::get('phone_number')}}">
+                                            <input id="verification_code" type="tel"
+                                                class="form-control @error('verification_code') is-invalid @enderror"
+                                                name="verification_code" value="{{ old('verification_code') }}" required>
+                                            @error('verification_code')
+                                            <span class="invalid-feedback" role="alert">
+                                                <strong>{{ $message }}</strong>
+                                            </span>
+                                            @enderror
+                                        </div>
+                                    </div>
+                                    <div class="form-group row mb-0">
+                                        <div class="col-md-6 offset-md-4">
+                                            <button type="submit" class="btn btn-primary">
+                                                {{ __('Verify Phone Number') }}
+                                            </button>
+                                        </div>
+                                    </div>
+                                </form>
+                            </div>
+                        </div>
+                    </div>
                 </div>
+            </div>
             @endif
         </div>
         <div class="col-md-4">

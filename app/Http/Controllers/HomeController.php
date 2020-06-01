@@ -36,7 +36,8 @@ class HomeController extends Controller
         }
 
         $jobs = Auth::user()->favourites;
-        return view('home',compact('jobs'));
+        $title = "Saved Jobs";
+        return view('home',compact('jobs','title'));
     }
 
     public function showAppliedJobs(){
@@ -50,6 +51,7 @@ class HomeController extends Controller
         }
 
         $jobs = Auth::user()->appliedJobs;
-        return view('home',compact('jobs'));
+        $title = "Applied Jobs";
+        return view('home',compact('jobs','title'));
     }
 }

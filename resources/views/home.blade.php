@@ -5,6 +5,7 @@
     <div class="row justify-content-center">
         <div class="col-md-10">
             @if(Auth::user()->user_type == 'seeker')
+                <h1>{{$title}}</h1>
                 @foreach ( $jobs as $job )
                     <div class="card">
                         <div class="card-header">{{$job->title}}</div>

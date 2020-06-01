@@ -17,6 +17,8 @@ class CreateProfilesTable extends Migration
             $table->bigIncrements('id');
             $table->integer('user_id');//to track the user we need to user id 
             $table->string('address');
+            $table->string('phone_number')->unique();
+            $table->boolean('isVerified')->default(false);
             $table->string('gender');
             $table->string('dob');
             $table->string('experience');
