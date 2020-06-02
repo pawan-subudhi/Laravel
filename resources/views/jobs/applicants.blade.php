@@ -2,7 +2,7 @@
 
 @section('content')
 <div class="container">
-    <h1>Applicants</h1>
+    <h3>Applicants</h3>
     <div class="row justify-content-center">
         <div class="col-md-12">       
             @foreach($applicants as $applicant)

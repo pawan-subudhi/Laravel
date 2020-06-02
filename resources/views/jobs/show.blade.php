@@ -99,7 +99,7 @@
                             Applied
                         </div>
                     @else
-                        <div class="alert alert-success" style="text-align: center;">
+                        <div class="alert alert-success" style="text-align: center;cursor:default;">
                             Please login to apply this job
                         </div>
                     @endif
@@ -156,18 +156,28 @@
 
         </div>
         <h4>Add comment</h4>
-        <form method="POST" action="{{ route('comment.store')}}">
-            @csrf
+        @if(Auth::check())
+            <form method="POST" action="{{ route('comment.store')}}">
+                @csrf
+                <div class="form-group">
+                    <textarea class="form-control" name="body"></textarea>
+                    <input type="hidden" name="job_id" value="{{$job->id}}" />
+                </div>
+                <div class="form-group">
+                    <input type="submit" class="btn btn-warning" value="Add Comment" />
+                </div>
+            </form>
+            <hr />
+            @include('partials.commentDisplay', ['comments' => $job->comments, 'job_id' => $job->id])
+        @else 
             <div class="form-group">
                 <textarea class="form-control" name="body"></textarea>
                 <input type="hidden" name="job_id" value="{{$job->id}}" />
             </div>
             <div class="form-group">
-                <input type="submit" class="btn btn-warning" value="Add Comment" />
+                <input type="submit" class="btn btn-warning" value="Please login to comment" disabled style="cursor:not-allowed"/>
             </div>
-        </form>
-        <hr />
-        @include('partials.commentDisplay', ['comments' => $job->comments, 'job_id' => $job->id])
+        @endif
         <br>
         <br>
         <br>

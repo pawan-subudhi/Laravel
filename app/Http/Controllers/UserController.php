@@ -26,26 +26,39 @@ class UserController extends Controller
             'phone_number' => 'required|numeric',
         ]);
 
-        /* Get credentials from .env */
-        $token = "";
-        $twilio_sid = "";
-        $twilio_verify_sid = "";
-        
-        $twilio = new Client($twilio_sid, $token);
-        $twilio->verify->v2->services($twilio_verify_sid)
-            ->verifications
-            ->create(request('phone_number'), "sms");
-
-        //$request->get('address') and request('address') are both same
-        //to get information of current logged in user is using auth 
         $user_id = auth()->user()->id;
-        Profile::where('user_id',$user_id)->update([
-            'address' => request('address'),
-            'experience' => request('experience'),
-            'bio' => request('bio'),
-            'phone_number' => request('phone_number'),
-        ]);
-        return redirect()->back()->with(['message'=>'Profile successfully Updated!','phone_number' => request('phone_number')]);
+        $profile = Profile::where('user_id',$user_id)->first();
+        if($profile->phone_number == request('phone_number') && $profile->isVerified){
+            Profile::where('user_id',$user_id)->update([
+                'address' => request('address'),
+                'experience' => request('experience'),
+                'bio' => request('bio'),
+            ]);
+            return redirect()->back()->with('message','Profile successfully Updated!');
+        } else {
+            $profile = Profile::where('phone_number',request('phone_number'))->first();
+            if(!$profile || $profile->user_id == $user_id){
+                /* Get credentials from .env */
+                $token = "16e3cc0b0070722869a6a51a1e309d0e";
+                $twilio_sid = "AC55769e013ba8b76915ffa30fa4a050a6";
+                $twilio_verify_sid = "VAe595cfc3f54b7a141d08f6485454e6d6";
+                
+                $twilio = new Client($twilio_sid, $token);
+                $twilio->verify->v2->services($twilio_verify_sid)
+                    ->verifications
+                    ->create(request('phone_number'), "sms");
+
+                Profile::where('user_id',$user_id)->update([
+                    'address' => request('address'),
+                    'experience' => request('experience'),
+                    'bio' => request('bio'),
+                    'phone_number' => request('phone_number'),
+                ]);
+                return redirect()->back()->with(['message'=>'Number need to be verified!','phone_number' => request('phone_number')]);
+            } else {
+                return redirect()->back()->with('message','Number is already taken!');
+            }   
+        }
     }
 
     protected function verify(Request $request)
@@ -55,19 +68,20 @@ class UserController extends Controller
             'phone_number' => ['required', 'string'],
         ]);
         /* Get credentials from .env */
-        $token = "";
-        $twilio_sid = "";
-        $twilio_verify_sid = "";
+        $token = "16e3cc0b0070722869a6a51a1e309d0e";
+        $twilio_sid = "AC55769e013ba8b76915ffa30fa4a050a6";
+        $twilio_verify_sid = "VAe595cfc3f54b7a141d08f6485454e6d6";
         $twilio = new Client($twilio_sid, $token);
         $verification = $twilio->verify->v2->services($twilio_verify_sid)
             ->verificationChecks
             ->create(request('verification_code'), array('to' => request('phone_number')));
         if ($verification->valid) {
-            $user = tap(Profile::where('phone_number', request('phone_number')))->update(['isVerified' => true]);
+            tap(Profile::where('phone_number', request('phone_number')))->update(['isVerified' => true]);
             /* Authenticate user */
             return redirect()->back()->with('message','Phone number verified');
+        } else {
+            return redirect()->back()->with('message','Wrong OTP enetered!');
         }
-        return back()->with(['phone_number' => request('phone_number'), 'error' => 'Invalid verification code entered!']);
     }
 
     public function coverletter(Request $request){

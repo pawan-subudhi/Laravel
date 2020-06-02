@@ -131,6 +131,7 @@
             <button type="submit" class="btn btn-primary">
               {{ __('Login') }}
           </button>
+          <a href="{{route('redirect')}}" class="btn btn-warning">Login with <i style="color:blue;"class="fa fa-google" aria-hidden="true"></i></a>
         </form>
       </div>
     </div>

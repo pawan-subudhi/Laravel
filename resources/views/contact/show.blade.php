@@ -5,7 +5,7 @@
 <div class="unit-5 overlay" style="background-image:  url('external/images/hero_1.jpg');">
   <div class="container text-center">
     <h2 class="mb-0">Contact</h2>
-    <p class="mb-0 unit-6"><a href="index.html">Home</a> <span class="sep">></span> <span>Contact</span></p>
+    <p class="mb-0 unit-6"><a href="{{url("/")}}">Home</a> <span class="sep">></span> <span>Contact</span></p>
   </div>
 </div>
 
@@ -50,7 +50,7 @@
 
           <div class="row form-group">
             <div class="col-md-12">
-              <input type="submit" value="Send Message" class="btn btn-primary pill px-4 py-2">
+              <input type="submit" value="Send Message" class="btn btn-primary pill px-4 py-2" style="cursor: not-allowed;">
             </div>
           </div>
 
@@ -75,7 +75,7 @@
         <div class="p-4 mb-3 bg-white">
           <h3 class="h5 text-black mb-3">More Info</h3>
           <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit. Ipsa ad iure porro mollitia architecto hic consequuntur. Distinctio nisi perferendis dolore, ipsa consectetur? Fugiat quaerat eos qui, libero neque sed nulla.</p>
-          <p><a href="#" class="btn btn-primary px-4 py-2 text-white pill">Learn More</a></p>
+          <p><a href="#" class="btn btn-primary px-4 py-2 text-white pill" style="cursor: not-allowed;">Learn More</a></p>
         </div>
       </div>
     </div>

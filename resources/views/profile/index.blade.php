@@ -39,9 +39,11 @@
                     <form action="{{route('profile.create')}}" method="POST">
                         @csrf
                         <div class="form-group">
-                            <label for="">Address</label>
-                            <input type="text" name="address" value="<?php echo Auth::user()->profile->address? Auth::user()->profile->address : old('address') ?>"  class="form-control">
-                            
+                            <label for="address">Address</label>
+                            <input type="text" 
+                                    name="address" 
+                                    value="<?php echo Auth::user()->profile->address? Auth::user()->profile->address : old('address') ?>"  class="form-control"
+                            >                            
                             {{-- check if any errors then display error using $error variable which laravel provides--}}
                             @if($errors->has('address'))
                                 <div class="error" style="color:red;">
@@ -52,12 +54,21 @@
                         </div>
                         
                         <div class="form-group">
-                            <label for="">Phone number</label>
-                            <input type="text" name="phone_number" value="<?php echo Auth::user()->profile->phone_number? Auth::user()->profile->phone_number : old('phone_number') ?>"  class="form-control">
+                            <label for="phone_number">Phone number</label>
+                            <input  type="text" 
+                                    name="phone_number" 
+                                    value="<?php echo Auth::user()->profile->phone_number? Auth::user()->profile->phone_number : old('phone_number') ?>"  
+                                    class="form-control" 
+                                    style= "cursor: <?php echo Auth::user()->profile->isVerified ? 'not-allowed':'' ?>;"
+                            >
 
                             @if($errors->has('phone_number'))
                                 <div class="error" style="color:red;">
                                     {{$errors->first('phone_number')}}
+                                </div>
+                            @elseif(Auth::user()->profile->phone_number && !Auth::user()->profile->isVerified )
+                                <div class="error" style="color:red;">
+                                    Please verify your phone number! Click on update button
                                 </div>
                             @endif
                         </div>
@@ -90,54 +101,58 @@
                     </form>
                 </div>
             </div>
-            @if(Session::get('message') === 'Profile successfully Updated!')
-            <div class="container"   style="
-                                            position: fixed;
-                                            top: 30%;
-                                            left: 4%;
-                                            z-index: 999;"
-            >
-                <div class="row justify-content-center">
-                    <div class="col-md-8">
-                        <div class="card">
-                            <div class="card-header">Verify Your Phone Number</div>
-                            <div class="card-body">
-                                @if (Session::get('error'))
-                                <div class="alert alert-danger" role="alert">
-                                    {{Session::get('error')}}
-                                </div>
-                                @endif
-                                Please enter the OTP sent to your number: {{Session::get('phone_number')}}
-                                <form action="{{route('verify')}}" method="post">
-                                    @csrf
-                                    <div class="form-group row">
-                                        <label for="verification_code"
-                                            class="col-md-4 col-form-label text-md-right">{{ __('Phone Number') }}</label>
-                                        <div class="col-md-6">
-                                            <input type="hidden" name="phone_number" value="{{Session::get('phone_number')}}">
-                                            <input id="verification_code" type="tel"
-                                                class="form-control @error('verification_code') is-invalid @enderror"
-                                                name="verification_code" value="{{ old('verification_code') }}" required>
-                                            @error('verification_code')
-                                            <span class="invalid-feedback" role="alert">
-                                                <strong>{{ $message }}</strong>
-                                            </span>
-                                            @enderror
-                                        </div>
-                                    </div>
-                                    <div class="form-group row mb-0">
-                                        <div class="col-md-6 offset-md-4">
-                                            <button type="submit" class="btn btn-primary">
-                                                {{ __('Verify Phone Number') }}
-                                            </button>
-                                        </div>
-                                    </div>
-                                </form>
+            @if(Session::has('message') && Session::get('message')!== 'Number need to be verified!' && Session::get('message') !== 'Wrong OTP enetered!')
+                <div class="alert alert-success">
+                    {{Session::get('message')}}
+                </div>
+            @endif
+            @if(Session::get('message') === 'Number need to be verified!' || Session::get('message') === 'Wrong OTP enetered!' )
+                <div class="card" style="
+                                        position: fixed;
+                                        top: 36%;
+                                        left: 25%;
+                                        right: 25%;
+                                        z-index: 999;"
+                >
+                    <div class="card-header">Verify Your Phone Number</div>
+                    <div class="card-body">
+                        @if (Session::get('message') === 'Wrong OTP enetered!')
+                            <div class="alert alert-danger" role="alert">
+                                {{Session::get('message')}}
                             </div>
-                        </div>
+                        @endif
+                        Please enter the OTP sent to your number: {{Session::get('phone_number')}}
+                        <form action="{{route('verify')}}" method="post">
+                            @csrf
+                            <div class="form-group row">
+                                <label for="verification_code"
+                                    class="col-md-4 col-form-label text-md-right">{{ __('Phone Number') }}</label>
+                                <div class="col-md-6">
+                                    <input type="hidden" name="phone_number" value="{{Session::get('phone_number')}}">
+                                    <input  id="verification_code" 
+                                            type="tel"
+                                            class="form-control @error('verification_code') is-invalid @enderror"
+                                            name="verification_code" value="{{ old('verification_code') }}"
+                                            autocomplete="off"
+                                            required
+                                    >
+                                    @error('verification_code')
+                                    <span class="invalid-feedback" role="alert">
+                                        <strong>{{ $message }}</strong>
+                                    </span>
+                                    @enderror
+                                </div>
+                            </div>
+                            <div class="form-group row mb-0">
+                                <div class="col-md-6 offset-md-4">
+                                    <button type="submit" class="btn btn-primary">
+                                        {{ __('Verify Phone Number') }}
+                                    </button>
+                                </div>
+                            </div>
+                        </form>
                     </div>
                 </div>
-            </div>
             @endif
         </div>
         <div class="col-md-4">

@@ -113,3 +113,7 @@ Route::get('/contact', 'ContactController@contact')->name('contact');
 
 //verify the number
 Route::post('/verify', 'UserController@verify')->name('verify');
+
+//Auth routes
+Route::get('/redirect','SocialAuthGoogleController@redirect')->name('redirect');
+Route::get('/callback','SocialAuthGoogleController@callback');

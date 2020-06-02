@@ -40,7 +40,7 @@
                         @csrf
                         <div class="form-group">
                             <label for="">Address</label>
-                            <input type="text" name="address" value="<?php echo Auth::user()->company->address? Auth::user()->company->address : old('address') ?>" class="form-control @error('company_logo') is-invalid @enderror">
+                            <input type="text" name="address" value="<?php echo Auth::user()->company->address? Auth::user()->company->address : old('address') ?>" class="form-control @error('address') is-invalid @enderror">
                             @error('address')
                                 <span class="invalid-feedback" role="alert">
                                     <strong>{{ $message }}</strong>

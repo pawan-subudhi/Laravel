@@ -83,7 +83,7 @@
 
             @endforeach
             @else
-            <h4 style="text-align: center;color: black;"><strong>No jobs found</strong></h4>
+              <h4 style="text-align: center;color: black;"><strong>No jobs found</strong></h4>
             @endif
 
 
