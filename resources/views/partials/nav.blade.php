@@ -17,12 +17,14 @@
           <div class="py-1">
             <div class="row align-items-center">
               <div class="col-2">
-                <h2 class="mb-0 site-logo"><a href="/">Job<strong class="font-weight-bold">Finder</strong> </a></h2>
+                <h2 class="mb-0 site-logo"><a href="/">Job<strong class="font-weight-bold">Finder</strong></a></h2>
               </div>
               <div class="col-10">
                 <nav class="site-navigation text-right" role="navigation">
                   <div class="container">
-                    <div class="d-inline-block d-lg-none ml-md-0 mr-auto py-3"><a href="#" class="site-menu-toggle js-menu-toggle text-black"><span class="icon-menu h3"></span></a></div>
+                    <div class="d-inline-block d-lg-none ml-md-0 mr-auto py-3">
+                      <a href="#" class="site-menu-toggle js-menu-toggle text-black"><span class="icon-menu h3"></span></a>
+                    </div>
 
                     <ul class="site-menu js-clone-nav d-none d-lg-block">
                       {{-- if user is not logged in  --}}
@@ -80,7 +82,7 @@
               <label for="email" class="col-md-4 col-form-label">{{ __('E-Mail Address') }}</label>
 
               <div class="col-md-12">
-                  <input id="email" type="email" class="form-control @error('email') is-invalid @enderror" name="email" value="{{ old('email') }}" required autocomplete="email" autofocus>
+                  <input id="email" type="email" class="form-control @error('email') is-invalid @enderror" name="email" value="{{ old('email') }}" required autocomplete="off" autofocus>
 
                   @error('email')
                       <span class="invalid-feedback" role="alert">
@@ -131,7 +133,9 @@
             <button type="submit" class="btn btn-primary">
               {{ __('Login') }}
           </button>
-          <a href="{{route('redirect')}}" class="btn btn-warning">Login with <i style="color:blue;"class="fa fa-google" aria-hidden="true"></i></a>
+          <a href="{{route('redirect')}}" class="btn btn-warning">
+            Login with <i style="color:blue;"class="fa fa-google" aria-hidden="true"></i>
+          </a>
         </form>
       </div>
     </div>

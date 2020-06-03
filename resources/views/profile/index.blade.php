@@ -43,6 +43,7 @@
                             <input type="text" 
                                     name="address" 
                                     value="<?php echo Auth::user()->profile->address? Auth::user()->profile->address : old('address') ?>"  class="form-control"
+                                    autocomplete="off"
                             >                            
                             {{-- check if any errors then display error using $error variable which laravel provides--}}
                             @if($errors->has('address'))
@@ -60,6 +61,7 @@
                                     value="<?php echo Auth::user()->profile->phone_number? Auth::user()->profile->phone_number : old('phone_number') ?>"  
                                     class="form-control" 
                                     style= "cursor: <?php echo Auth::user()->profile->isVerified ? 'not-allowed':'' ?>;"
+                                    autocomplete="off"
                             >
 
                             @if($errors->has('phone_number'))
@@ -75,7 +77,7 @@
 
                         <div class="form-group">
                             <label for="">Experience</label>
-                            <textarea name="experience" class="form-control"><?php echo Auth::user()->profile->experience? Auth::user()->profile->experience : old('experience') ?></textarea>
+                            <textarea name="experience" class="form-control" autocomplete="off"><?php echo Auth::user()->profile->experience? Auth::user()->profile->experience : old('experience') ?></textarea>
 
                             @if($errors->has('experience'))
                                 <div class="error" style="color:red;">
@@ -86,7 +88,7 @@
 
                         <div class="form-group">
                             <label for="">Bio</label>
-                            <textarea name="bio" class="form-control"><?php echo Auth::user()->profile->bio? Auth::user()->profile->bio : old('bio') ?></textarea>
+                            <textarea name="bio" class="form-control" autocomplete="off"><?php echo Auth::user()->profile->bio? Auth::user()->profile->bio : old('bio') ?></textarea>
 
                             @if($errors->has('bio'))
                                 <div class="error" style="color:red;">

@@ -154,13 +154,13 @@ class JobController extends Controller
 
         $keyword = $request->get('title');
         $type = $request->get('type');
-        $category = $request->get('catrgory_id');
+        $category = $request->get('category_id');
         $address = $request->get('address');
         //if the user has clicked the search button then perform this search
         if($keyword || $type || $category || $address){
             //DB::enableQueryLog(); // Enable query log
             $jobs = Job::where('title','LIKE','%'.$keyword.'%')
-                       ->orWhere('type','LIKE','%'.$type.'%')
+                       ->orWhere('type',$type)
                        ->orWhere('category_id',$category)
                        ->orWhere('address','LIKE','%'.$address.'%')
                        ->paginate(10);

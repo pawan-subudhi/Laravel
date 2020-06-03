@@ -39,9 +39,9 @@ class UserController extends Controller
             $profile = Profile::where('phone_number',request('phone_number'))->first();
             if(!$profile || $profile->user_id == $user_id){
                 /* Get credentials from .env */
-                $token = "16e3cc0b0070722869a6a51a1e309d0e";
-                $twilio_sid = "AC55769e013ba8b76915ffa30fa4a050a6";
-                $twilio_verify_sid = "VAe595cfc3f54b7a141d08f6485454e6d6";
+                $token = env('TWILIO_TOKEN');
+                $twilio_sid = env('TWILIO_SID');
+                $twilio_verify_sid = env('TWILIO_VERIFY_SID');
                 
                 $twilio = new Client($twilio_sid, $token);
                 $twilio->verify->v2->services($twilio_verify_sid)
@@ -68,9 +68,9 @@ class UserController extends Controller
             'phone_number' => ['required', 'string'],
         ]);
         /* Get credentials from .env */
-        $token = "16e3cc0b0070722869a6a51a1e309d0e";
-        $twilio_sid = "AC55769e013ba8b76915ffa30fa4a050a6";
-        $twilio_verify_sid = "VAe595cfc3f54b7a141d08f6485454e6d6";
+        $token = env('TWILIO_TOKEN');
+        $twilio_sid = env('TWILIO_SID');
+        $twilio_verify_sid = env('TWILIO_VERIFY_SID');
         $twilio = new Client($twilio_sid, $token);
         $verification = $twilio->verify->v2->services($twilio_verify_sid)
             ->verificationChecks
