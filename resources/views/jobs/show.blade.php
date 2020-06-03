@@ -37,14 +37,14 @@
                                         style=" font-size: 15px;
                                                 margin-bottom: 14px;"
                                         data-id=<?php echo $job->id ?>
-                                        data-url=<?php echo !$job->checkLiked()? "http://jobportal.com/like/" : "http://jobportal.com/dislike/"?>
+                                        data-url=<?php echo !$job->checkLiked()? "/like/" : "/dislike/"?>
                                 ><i class="fa fa-thumbs-up" id="like-button" style="color: <?php echo !$job->checkLiked()? 'black': 'red'?>">&nbsp;</i></button>  
                          
                                 <button class="btn btn-submit-favourite" 
                                         style="font-size: 15px;
                                                 margin-bottom: 14px;"
                                         data-id=<?php echo $job->id ?>
-                                        data-url=<?php echo !$job->checkSaved()? "http://jobportal.com/save/" : "http://jobportal.com/unsave/"?>
+                                        data-url=<?php echo !$job->checkSaved()? "/save/" : "/unsave/"?>
                                 ><i class="fa fa-bookmark" id="favourite-button" style="color: <?php echo !$job->checkSaved()? 'black': 'red'?>">&nbsp;</i></button>  
                                 
                             @endif  
@@ -93,7 +93,7 @@
                         <button class="btn btn-success btn-submit-apply" 
                                 style="width: 100%" <?php echo $job->checkApplication() ? 'disabled' : 'enabled'?>
                                 data-id=<?php echo $job->id ?>
-                                data-url="http://jobportal.com//applications/"
+                                data-url="/applications/"
                         >Apply</button>  
                         <div class="alert alert-success" id="application-status" style="text-align: center;display:<?php echo $job->checkApplication() ? 'block' : 'none'?>;">
                             Applied

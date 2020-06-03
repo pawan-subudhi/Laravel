@@ -110,10 +110,10 @@ $(document).ready(function(){
     e.preventDefault();
     if(document.getElementById("like-button").style.color == 'black'){
       var toggleColor = 'red';
-      var toggleUrl = "http://jobportal.com/dislike/";
+      var toggleUrl = "/dislike/";
     } else {
       var toggleColor = 'black';
-      var toggleUrl = "http://jobportal.com/like/";
+      var toggleUrl = "/like/";
     }
     url = $(this).attr("data-url")+$(this).attr("data-id");
     $.ajax({
@@ -133,10 +133,10 @@ $(document).ready(function(){
     e.preventDefault();
     if(document.getElementById("favourite-button").style.color == 'black'){
       var toggleColor = 'red';
-      var toggleUrl = "http://jobportal.com/unsave/";
+      var toggleUrl = "/unsave/";
     } else {
       var toggleColor = 'black';
-      var toggleUrl = "http://jobportal.com/save/";
+      var toggleUrl = "/save/";
     }
     url = $(this).attr("data-url")+$(this).attr("data-id");
     $.ajax({
