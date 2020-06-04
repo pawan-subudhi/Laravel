@@ -117,3 +117,7 @@ Route::post('/verify', 'UserController@verify')->name('verify');
 //Auth routes
 Route::get('/redirect','SocialAuthGoogleController@redirect')->name('redirect');
 Route::get('/callback','SocialAuthGoogleController@callback');
+
+//External job links
+Route::get('/external-jobs/alljobs','ExternalJobController@getApiData');
+Route::get('/jobs/{id}','ExternalJobController@show')->name('external-jobs.show');

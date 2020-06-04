@@ -10,7 +10,11 @@
                     <tr>
                         <td>
                             {{-- if you use asset() it targers to the public folder --}}
-                            <img src="{{asset('uploads/logo')}}/{{$job->company->logo}}" width="80" alt="avatar image">
+                            @if(empty($job->company->logo))
+                                <img src="{{asset('avatar/man.jpg')}}"width="80" alt="companyLogo">
+                            @else 
+                                <img src="{{asset('uploads/logo')}}/{{$job->company->logo}}" width="80" alt="companyLogo">
+                            @endif
                         </td>
                         <td>
                             Position:{{$job->position}}

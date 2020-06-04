@@ -40,6 +40,9 @@
                         <a href="{{route('company')}}">Company</a>
                       </li>
                       <li>
+                        <a href="{{url('/external-jobs/alljobs')}}">External-Jobs</a>
+                      </li>
+                      <li>
                         <a href="{{route('contact')}}">Contact</a>
                       </li>
                       <li>
