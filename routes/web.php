@@ -67,9 +67,6 @@ Route::post('/unsave/{id}','FavouriteController@unSaveJob')->name('unsave');
 Route::post('/like/{id}','LikeController@likeJob')->name('like');
 Route::post('/dislike/{id}','LikeController@dislikeJob')->name('dislike');
 
-//search
-Route::get('/jobs/search','JobController@searchJobs');
-
 //category
 Route::get('/category/{id}','CategoryController@index')->name('category.index');   
 
