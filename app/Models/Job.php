@@ -4,55 +4,72 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Model;
 
+/**
+ * Created by Pawan on 08/06/2020
+ */
 class Job extends Model
 {
     protected $guarded = [];
-    // the user id and comppany id are not coming from form so they need to be placed in fillable if it would have came from form then the gurded would have worked fine
-    // protected $fillable = [
-    //     'user_id',
-    //     'company_id',
-    // ];
-
-    //as slug can not be accessed directly so we are defining this function
+    
+    /**
+     * as slug can not be accessed directly so we are defining this function    
+     */
     public function getRouteKeyName(){
         return 'slug';
     }
 
-    //relationship with company(i.e many jobs belong to same company)
+    /**
+     * relationship with company(i.e many jobs belong to same company    
+     */
     public function company(){
         return $this->belongsTo('App\Models\Company');
     }
 
-    //Relationship for users
+    /**
+     * Relationship for users    
+     */
     public function users(){
         return $this->belongsToMany(User::class)->withTimeStamps();
     }
     
-    //helper function to check the user is already applied for the particular job or not 
+    /**
+     * helper function to check the user is already applied for the particular job or not     
+     */ 
     public function checkApplication(){
         return \DB::table('job_user')->where('user_id',auth()->user()->id)->where('job_id',$this->id)->exists();
     }
 
-    //realtionships b/w jobs and users i.e a user can favourite many jobs 
-    //here the writing style is diferent than compared to users realtion as ther laravel knows the pivot table name is what and and all as the rules are followed for writing the pivot table name but in this it's not so we are expilctly mentioning the table name and id's
+    /**
+     * helper function to check the user is already favourited for the particular job or not     
+     */
     public function favourites(){
         return $this->belongsToMany(Job::class,'favourites','job_id','user_id')->withTimeStamps();
     }
 
-    //if the user id is present in the favorites table for particular job  id then show unsave else save button 
+    /**
+     * check if the user id is present in the favorites table or not    
+     */
     public function checkSaved(){
         return \DB::table('favourites')->where('user_id',auth()->user()->id)->where('job_id',$this->id)->exists();
     }
 
-    //Relationships b/w likes and users     
+    /**
+     * Relationships b/w likes and users         
+     */
     public function likes(){
         return $this->belongsToMany(Job::class,'likes','job_id','user_id')->withTimeStamps();
     }
 
+    /**
+     * check if the user id is present in the likes table or not    
+     */
     public function checkLiked(){
         return \DB::table('likes')->where('user_id',auth()->user()->id)->where('job_id',$this->id)->exists();
     }
 
+    /**
+     * Relationships b/w jobs and comments        
+     */
     public function comments()
     {
         return $this->hasMany(Comment::class)->whereNull('parent_id');

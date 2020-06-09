@@ -9,6 +9,9 @@ use Illuminate\Notifications\Notifiable;
 use Illuminate\Contracts\Auth\MustVerifyEmail;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 
+/**
+ * Created by Pawan on 08/06/2020
+ */
 class User extends Authenticatable implements MustVerifyEmail
 {
     use Notifiable;
@@ -40,27 +43,37 @@ class User extends Authenticatable implements MustVerifyEmail
         'email_verified_at' => 'datetime',
     ];
 
-    //Relationship for profile
+    /**
+     * Relationship for profile    
+     */
     public function profile(){
         return $this->hasOne(Profile::class);
     }
     
-    //Relationship for company
+    /**
+     * Relationship for company    
+     */
     public function company(){
         return $this->hasOne(Company::class);
     }
 
-    //Relationship for favourited jobs user_id is primary key of this table and job_id is the foriegn key in our favourites table
+    /**
+     * Relationship for favourited jobs user_id is primary key of this table and job_id is the foriegn key in our favourites table    
+     */
     public function favourites(){
         return $this->belongsToMany(Job::class,'favourites','user_id','job_id')->withTimeStamps();
     }
 
-    //Relationship for applied jobs user_id is primary key of this table and job_id is the foriegn key in our applied jobs table
+    /**
+     * Relationship for applied jobs user_id is primary key of this table and job_id is the foriegn key in our applied jobs table    
+     */
     public function appliedJobs(){
         return $this->belongsToMany(Job::class,'job_user','user_id','job_id')->withTimeStamps();
     }
 
-    //roles relationships
+    /**
+     * roles relationships    
+     */
     public function roles(){
         return $this->belongsToMany(Role::class);
     }
