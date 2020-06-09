@@ -4,23 +4,34 @@ namespace App\Http\Controllers;
 
 use App\Job;
 use App\Post;
-use App\Comment;
 use App\Company;
 use App\Category;
 use App\Testimonial;
 use Illuminate\Http\Request;
-use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Auth;
 use App\Http\Requests\JobPostRequest;//this contains the validation rules for the job form if we follow this method of validation the pass jobpostrequest as a parameter inside store method
 
+/**
+ * This class is for CRUD operation related to jobs, handles job recommendation functionality and checks the user is applied for a job or not
+ * Date: 08/06/2020
+ * Author: Pawan
+ */
 class JobController extends Controller
 {
-    //to use middleware for protecting the routes by writing this we cant access any of the methods written by we need to access the index function in seeker profile to view all the jobs so we write except which accepts array as parameter that avoids checking of routes
+    /**
+     * __construct it contains middleware for protecting the routes
+     *
+     * @return void
+     */
     public function __construct(){
         $this->middleware(['employer','verified'],['except'=>array('index','show','apply','allJobs','searchJobs')]);
     }
 
-    //lists all job in the home page i.e welcome page
+    /**
+     * lists all job in the home page i.e welcome page    
+     *
+     * @return view
+     */
     public function index(){
         //posts by admin which need to be shown in the home page in blog post section
         $posts = Post::where('status',1)->get();
@@ -28,7 +39,6 @@ class JobController extends Controller
         //testimonials by admin which need to be shown in the home page in testimonials post section
         $testimonial = Testimonial::orderBy('id','DESC')->first();
 
-        //$jobs = Job::all()->take(10);//fetches randomly 10 records
         $jobs = Job::latest()->limit(10)->where('status',1)->get();//fetches latest 10 records
 
         $categories = Category::with('jobs')->get();//to display categories  and count of jobs in each
@@ -37,8 +47,13 @@ class JobController extends Controller
         return view('welcome',compact('jobs','companies','categories','posts','testimonial'));
     }
 
-    //will responsible once u click a job then it will show all the details regarding jobs 
-    //we have used route model bindings
+    /**
+     * show responsible once u click a job then it will show all the details regarding jobs 
+     *
+     * @param  int $id
+     * @param  mixed $job
+     * @return view
+     */
     public function show($id,Job $job){
         $jobRecommendations = $this->jobRecommendations($job);
         //we will be showing jobs using slug not by id so need to create a getRouteKeyName()
@@ -46,7 +61,12 @@ class JobController extends Controller
         return view('jobs.show',compact('job','jobRecommendations'));
     }
 
-    //job recommendation 
+    /**
+     * jobRecommendations
+     *
+     * @param  mixed $job
+     * @return array
+     */
     public function jobRecommendations($job){
         $data = [];
         //job recommedation based on category
@@ -79,28 +99,56 @@ class JobController extends Controller
         $jobRecommendations = $unique->values()->first();
         return $jobRecommendations;
     }
-
+    
+    /**
+     * myjob
+     *
+     * @return view
+     */
     public function myjob(){
         $jobs = Job::where('user_id',auth()->user()->id)->get();
         return view('jobs.myjob',compact('jobs'));
     }
-
+    
+    /**
+     * edit job 
+     *
+     * @param  int $id
+     * @return view
+     */
     public function edit($id){
         $job = Job::findOrFail($id);
         return view('jobs.edit',compact('job'));
     }
-
+    
+    /**
+     * update job
+     *
+     * @param  mixed $request
+     * @param  int $id
+     * @return void
+     */
     public function update(Request $request,$id){
         $job = Job::findOrFail($id);
         $job->update($request->all());
         return redirect()->back()->with('message','Job successfully updated');
     }
-    
+        
+    /**
+     * create job 
+     *
+     * @return view
+     */
     public function create(){
         return view('jobs.create');
     }
 
-    //jobPostRequest is used to validate the data
+    /**
+     * store job details in database
+     *
+     * @param  mixed $request
+     * @return void
+     */
     public function store(JobPostRequest $request){
         $user_id = auth()->user()->id;
         $company = Company::where('user_id',$user_id)->first();
@@ -125,21 +173,38 @@ class JobController extends Controller
         ]);
         return redirect()->back()->with('message','Job posted successfully!');
     }
-
+    
+    /**
+     * apply job
+     *
+     * @param  mixed $request
+     * @param  int $id
+     * @return bool
+     */
     public function apply(Request $request,$id){
         $jobId = Job::find($id);
         //attach the logged in user id
         $jobId->users()->attach(Auth::user()->id);
-        // return redirect()->back()->with('message','Application sent!');
+    
         return 'true';
     }
-
+    
+    /**
+     * it checks wether the job has users or not
+     *
+     * @return view
+     */
     public function applicant(){
-        //it checks wether the job has users or not if there then it fetched only that data otherwise it wont fetch any data
         $applicants = Job::has('users')->where('user_id',auth()->user()->id)->get();
         return view('jobs.applicants',compact('applicants'));
     }
-
+    
+    /**
+     * allJobs handles the search job functionilty
+     *
+     * @param  mixed $request
+     * @return view
+     */
     public function allJobs(Request $request){
         
         //front search
@@ -158,14 +223,11 @@ class JobController extends Controller
         $address = $request->get('address');
         //if the user has clicked the search button then perform this search
         if($keyword || $type || $category || $address){
-            //DB::enableQueryLog(); // Enable query log
             $jobs = Job::where('title','LIKE','%'.$keyword.'%')
                        ->orWhere('type',$type)
                        ->orWhere('category_id',$category)
                        ->orWhere('address','LIKE','%'.$address.'%')
                        ->paginate(10);
-            //dd(DB::getQueryLog()); // Show results of log
-            //dd($jobs);
             return view('jobs.alljobs',compact('jobs'));
          } else{
                 //paginate and display

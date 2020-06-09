@@ -5,27 +5,42 @@ namespace App\Http\Controllers;
 use App\Job;
 use App\Post;
 use Illuminate\Http\Request;
+use App\Http\Requests\DashboardPostRequest;
 
+/**
+ * This class is for the CRUD operation of post by admin, toggle job and post status
+ * Date: 08/06/2020
+ * Author: Pawan
+ */
 class DashboardController extends Controller
 {
-    //
+        
+    /**
+     * gets the latest posts 
+     *
+     * @return view
+     */
     public function index(){
         $posts = Post::latest()->paginate(20);
         return view('admin.index',compact('posts'));
     }
 
-    //contains the form
+    /**
+     * returns the create post view
+     *
+     * @return view
+     */
     public function create(){
         return view('admin.create');
     }
-
-    public function store(Request $request){
-        //validate data
-        $this->validate($request,[
-            'title' => 'required|min:3',
-            'content' => 'required',
-            'image' => 'required|mimes:jpeg,jpg,png',
-        ]);
+    
+    /**
+     * validate and stores the post data into the database
+     *
+     * @param  mixed $request
+     * @return void
+     */
+    public function store(DashboardPostRequest $validationRules, Request $request){
 
         if($request->hasFile('image')){
             $file = $request->file('image');
@@ -42,13 +57,24 @@ class DashboardController extends Controller
         return redirect('/dashboard')->with('message','Post created successfully');
     }
 
-    //edit post
+    /**
+     * returns the edit post view
+     *
+     * @param  int $id
+     * @return void
+     */
     public function edit($id){
         $post = Post::find($id);
         return view('admin.edit',compact('post'));
     }
-
-    //update post
+   
+    /**
+     * updates the post data
+     *
+     * @param  int $id
+     * @param  mixed $request
+     * @return void
+     */
     public function update($id , Request $request){
         $this->validate($request,[
             'title' => 'required|min:3',
@@ -74,36 +100,48 @@ class DashboardController extends Controller
         return redirect()->back()->with('message','Post updated successfully');
     }
 
-    //u can do another function and call it or u can directly write in else see above
-    // public function updateAllExceptImage($id , Request $request){
-    //     Post::where('id',$id)->update([
-    //         'title'  => $title = $request->get('title'),
-    //         'content' => $request->get('content'),
-    //         'status' => $request->get('status'),
-    //      ]);
-    // }
-
-    //to delete post
+    /**
+     * to delete post    
+     *
+     * @param  mixed $request
+     * @return void
+     */
     public function destroy(Request $request){
         $id = $request->get('id');
         $post = Post::find($id);
         $post->delete();
         return redirect()->back()->with('message','Post deleted successfully');
     }
-
+    
+    /**
+     * returns the deleted items
+     *
+     * @return view
+     */
     public function trash(){
         //onlyTrashed() is used to get deleted items
         $posts = Post::onlyTrashed()->paginate(20);
         return view('admin.trash',compact('posts'));
     }
-
+    
+    /**
+     * restores back the deleted post
+     *
+     * @param  int $id
+     * @return void
+     */
     public function restore($id){
         //restore() is used to get back the deleted items
         $posts = Post::onlyTrashed()->where('id',$id)->restore();
         return redirect()->back()->with('message','Post restored successfully');
     }
-
-    //toggle method for status
+   
+    /**
+     * toggle method for status 
+     *
+     * @param  int $id
+     * @return void
+     */
     public function toggle($id){
         $post = Post::find($id);
         $post->status = !$post->status;
@@ -111,19 +149,33 @@ class DashboardController extends Controller
         return redirect()->back()->with('message','Status updated successfully');
     }
 
-    //to read the blog post
+    /**
+     * show
+     *
+     * @param  int $id
+     * @return view
+     */
     public function show($id){
         $post = Post::find($id);
         return view('admin.read',compact('post'));
     }
 
-    //to show al the jobs for the admin to control over it
+    /**
+     * getAllJobs for the admin to view
+     *
+     * @return view
+     */
     public function getAllJobs(){
         $jobs = Job::latest()->paginate(30);
         return view('admin.jobs',compact('jobs'));
     }
-
-    //change the status of jobs
+   
+    /**
+     * changeJobStatus of jobs
+     *
+     * @param  int $id
+     * @return void
+     */
     public function changeJobStatus($id){
         $job = Job::find($id);
         $job->status = !$job->status;

@@ -4,18 +4,24 @@ namespace App\Http\Controllers;
 
 use App\User;
 use App\Company;
-use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Hash;
+use App\Http\Requests\EmployerRegisterPostRequest;
 
+/**
+ * This class is for registering employer 
+ * Date: 08/06/2020
+ * Author: Pawan
+ */
 class EmployerRegisterController extends Controller
-{
-    public function employerRegister(Request $request){
-        //verify data
-        $this->validate($request,[
-            'cname' => 'required|string|max:255',
-            'email' => 'required|string|email|max:255|unique:users',
-            'password' => 'required|string|min:8|confirmed',//confirmed means both the password and confirm password field must be same
-        ]);
+{    
+    /**
+     * takes care of employerRegister by validating data and stores data in database
+     *
+     * @param  mixed $request
+     * @return void
+     */
+    public function employerRegister(EmployerRegisterPostRequest $validationRules){
+    
         $user = User::create([
             'email' => request('email'),
             'password' => Hash::make(request('password')),

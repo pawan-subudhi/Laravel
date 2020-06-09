@@ -1,9 +1,7 @@
 <?php
 
 /** @var \Illuminate\Database\Eloquent\Factory $factory */
-use App\Job;
 use App\User;
-use App\Company;
 use Illuminate\Support\Str;
 use Faker\Generator as Faker;
 
@@ -65,6 +63,29 @@ $factory->define(App\Job::class, function (Faker $faker) {
         'experience' => rand(1,10),
         'gender' => $faker->randomElement(['male','female']),
         'salary' => rand(10000,50000),
+
+    ];
+});
+
+//Factory for Testimonies database using faker
+$factory->define(App\Testimonial::class, function (Faker $faker) {
+    return [
+        'content' => $faker->paragraph(rand(40,100)),
+        'name' => 'kumar_Pawan',
+        'profession' => 'Mindfire Intern',
+        'video_id' => 407694202
+
+    ];
+});
+
+//Factory for Testimonies database using faker
+$factory->define(App\Post::class, function (Faker $faker) {
+    return [
+        'title' => $title = $faker->text,
+        'slug' => str_slug($title),
+        'content' => $faker->paragraph(rand(40,100)),
+        'status' => rand(0,1),//0->pending and 1->live
+        'image' => 'man.jpg'
 
     ];
 });

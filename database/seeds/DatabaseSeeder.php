@@ -20,6 +20,8 @@ class DatabaseSeeder extends Seeder
         factory('App\User',20)->create();//create 20 users
         factory('App\Company',30)->create();//create 30 companies
         factory('App\Job',40)->create();//create 40 jobs
+        factory('App\Testimonial',1)->create();
+        factory('App\Post',5)->create();
 
         $categories = [
             'Technology',

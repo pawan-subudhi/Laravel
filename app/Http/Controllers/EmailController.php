@@ -6,8 +6,19 @@ use App\Mail\SendJob;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Mail;
 
+/**
+ * This class is for sending a job mail 
+ * Date: 08/06/2020
+ * Author: Pawan
+ */
 class EmailController extends Controller
-{
+{    
+    /**
+     * send mail
+     *
+     * @param  mixed $request
+     * @return void
+     */
     public function send(Request $request){
         $homeUrl = url('/');
         $jobId = $request->get('job_id');

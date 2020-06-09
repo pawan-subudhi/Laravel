@@ -5,26 +5,40 @@ namespace App\Http\Controllers;
 use App\Profile;
 use Twilio\Rest\Client;
 use Illuminate\Http\Request;
-use Illuminate\Support\Facades\Auth;
+use App\Http\Requests\SeekerPostRequest;
 
+/**
+ * This class is for creating and viewing user details
+ * Date: 08/06/2020
+ * Author: Pawan
+ */
 class UserController extends Controller
-{
-    //middleware
+{    
+    /**
+     * __construct handles the middleware
+     *
+     * @return void
+     */
     public function __construct(){
         $this->middleware(['seeker','verified']);
     }
+        
+    /**
+     * handles the user profile view
+     *
+     * @return view
+     */
     public function index(){
         return view('profile.index');
     }
-
-    public function store(Request $request){
-        // validation of data using validate method which takes the request and array of fields which need to be validated
-        $this->validate($request,[
-            'address'  => 'required',
-            'bio' => 'required|min:20',
-            'experience' => 'required|min:6',
-            'phone_number' => 'required|numeric',
-        ]);
+    
+    /**
+     * stores the user details
+     *
+     * @param  mixed $request
+     * @return void
+     */
+    public function store(SeekerPostRequest $validationRules){
 
         $user_id = auth()->user()->id;
         $profile = Profile::where('user_id',$user_id)->first();
@@ -60,7 +74,13 @@ class UserController extends Controller
             }   
         }
     }
-
+    
+    /**
+     * verifies the user phone number
+     *
+     * @param  mixed $request
+     * @return void
+     */
     protected function verify(Request $request)
     {
         $data = $request->validate([
@@ -83,7 +103,13 @@ class UserController extends Controller
             return redirect()->back()->with('message','Wrong OTP enetered!');
         }
     }
-
+    
+    /**
+     * validate and stores the coverletter
+     *
+     * @param  mixed $request
+     * @return void
+     */
     public function coverletter(Request $request){
         // validation
         $this->validate($request,[
@@ -97,7 +123,13 @@ class UserController extends Controller
         ]);
         return redirect()->back()->with('message','Cover letter successfully Updated!');
     }
-
+    
+    /**
+     * validate and stores the resume
+     *
+     * @param  mixed $request
+     * @return void
+     */
     public function resume(Request $request){
         // validation
         $this->validate($request,[
@@ -111,7 +143,13 @@ class UserController extends Controller
         ]);
         return redirect()->back()->with('message','Resume successfully Updated!');
     }
-
+    
+    /**
+     * validate and stores the avatar
+     *
+     * @param  mixed $request
+     * @return void
+     */
     public function avatar(Request $request){
         // validation
         $this->validate($request,[

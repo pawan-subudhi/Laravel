@@ -5,18 +5,30 @@ namespace App\Http\Controllers;
 use App\User;
 use Exception;
 use App\Profile;
-use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Laravel\Socialite\Facades\Socialite;
 
+/**
+ * This class is for handling the redirect and callback function to google oauth API
+ * Date: 08/06/2020
+ * Author: Pawan
+ */
 class SocialAuthGoogleController extends Controller
 {
-    //redirect(): redirects our users to the google
+    /**
+     * redirects our users to the google oauth api
+     *
+     * @return void
+     */
     public function redirect(){
         return Socialite::driver('google')->redirect();
     }
 
-    //Callback(): handle callback from google
+    /**
+     * handles callback from google and the user registeration 
+     *
+     * @return void
+     */
     public function callback(){
         try{
             $googleUser = Socialite::driver('google')->user();

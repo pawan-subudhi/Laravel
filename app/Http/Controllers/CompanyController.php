@@ -4,39 +4,62 @@ namespace App\Http\Controllers;
 
 use App\Company;
 use Illuminate\Http\Request;
+use App\Http\Requests\CompanyPostRequest;
 
+/**
+ * This class is for viewing a single company, all companies, create company view and to store company details
+ * Date: 08/06/2020
+ * Author: Pawan
+ */
 class CompanyController extends Controller
 {
-    //middleware controller
+    /**
+     * __construct middleware controller    
+     *
+     * @return void
+     */
     public function __construct(){
         $this->middleware(['employer','verified'],['except'=>array('index','company')]);
     }
 
-    //the $name parameter is route model binding the advantage is no need to find the company detail we can get it directly by skipping one line
+    /**
+     * returns details of a particular company
+     *
+     * @param  int $id
+     * @param  mixed $company
+     * @return view
+     */
     public function index($id , Company $company){
         return view('company.index',compact('company'));   
     }
-
-    //to view all companies
+   
+    /**
+     * returns details of a all companies
+     *
+     * @return view
+     */
     public function company(){
         $companies = Company::paginate(10);
         return view('company.company',compact('companies'));
     }
-
+    
+    /**
+     * returns a create view for company details
+     *
+     * @return view
+     */
     public function create(){
         return view('company.create');
     }
-
-    public function store(Request $request){
-        //validate the data
-        $this->validate($request,[
-            'address' => 'required',
-            'phone'=> 'regex:/[0-9]{10}/',
-            'website'=> 'required|regex:/[a-zA-Z]{3,}[.][a-zA-Z]{3,}/',
-            'slogan'=> 'required|min:10',
-            'description'=> 'required|min:10',
-        ]);
-        
+    
+    /**
+     * inserts company data into database after validating the data
+     *
+     * @param  mixed $request
+     * @return void
+     */
+    public function store(CompanyPostRequest $validationRules, Request $request){
+               
         //$request->get('address') and request('address') are both same
         //to get information of current logged in user is using auth 
         $user_id = auth()->user()->id;
@@ -50,7 +73,13 @@ class CompanyController extends Controller
         ]);
         return redirect()->back()->with('message','Company successfully Updated!');
     }
-
+    
+    /**
+     * validate and store the coverPhoto 
+     *
+     * @param  mixed $request
+     * @return void
+     */
     public function coverPhoto(Request $request){
         $this->validate($request,[
             'cover_photo' => 'required|mimes:png,jpg,jpeg|max:2000',
@@ -67,7 +96,13 @@ class CompanyController extends Controller
             return redirect()->back()->with('message','Company cover photo successfully Updated!');
         }
     }
-
+    
+    /**
+     * validate and store the companyLogo
+     *
+     * @param  mixed $request
+     * @return void
+     */
     public function companyLogo(Request $request){
         $this->validate($request,[
             'company_logo' => 'required|mimes:png,jpg,jpeg|max:2000',

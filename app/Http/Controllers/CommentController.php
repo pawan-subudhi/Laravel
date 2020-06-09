@@ -2,13 +2,23 @@
 
 namespace App\Http\Controllers;
 
-use App\Job;
 use App\Comment;
 use Illuminate\Http\Request;
 
+/**
+ * This class is for storing the comment
+ * Date: 08/06/2020
+ * Author: Pawan
+ */
 class CommentController extends Controller
 {
-    //
+        
+    /**
+     * store
+     *
+     * @param  mixed $request
+     * @return void
+     */
     public function store(Request $request){
     	$request->validate([
             'body'=>'required',

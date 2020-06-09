@@ -4,14 +4,26 @@ namespace App\Http\Controllers;
 
 use App\Category;
 use App\Job;
-use Illuminate\Http\Request;
+
+/**
+ * This class is for getting all jobs of each category by category id
+ * Date: 08/06/2020
+ * Author: Pawan
+ */
 
 class CategoryController extends Controller
 {
-    //getting all jobs of each category by category id
-    public function index($id){
-        $jobs = Job::where('category_id',$id)->paginate(20);
-        $categoryName = Category::where('id',$id)->first();
-        return view('jobs.jobs-category',compact('jobs','categoryName'));
+    /**
+     * getting all jobs of each category by category id
+     *
+     * @param  int $id
+     * @return view
+     */
+    public function index($id)
+    {
+        $jobs = Job::where('category_id', $id)->paginate(20);
+        $categoryName = Category::where('id', $id)->first();
+
+        return view('jobs.jobs-category', compact('jobs', 'categoryName'));
     }
 }
