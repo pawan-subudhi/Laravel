@@ -1,8 +1,8 @@
 <?php
 
-use App\Role;
-use App\User;
-use App\Category;
+use App\Models\Role;
+use App\Models\User;
+use App\Models\Category;
 use Illuminate\Database\Seeder;
 
 class DatabaseSeeder extends Seeder
@@ -17,11 +17,9 @@ class DatabaseSeeder extends Seeder
         //to avoid seeding again of category we used truncate
         //Category::truncate();
         // $this->call(UsersTableSeeder::class);
-        factory('App\User',20)->create();//create 20 users
-        factory('App\Company',30)->create();//create 30 companies
-        factory('App\Job',40)->create();//create 40 jobs
-        factory('App\Testimonial',1)->create();
-        factory('App\Post',5)->create();
+        factory('App\Models\User',20)->create();//create 20 users
+        factory('App\Models\Company',30)->create();//create 30 companies
+        factory('App\Models\Job',40)->create();//create 40 jobs
 
         $categories = [
             'Technology',

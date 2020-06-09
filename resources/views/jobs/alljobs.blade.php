@@ -27,7 +27,7 @@
                 <label>Category&nbsp;</label>
                 <select name="category_id" class="form-control">
                     <option value="">-select-</option>
-                    @foreach ( App\Category::all() as $cat)
+                    @foreach ( App\Models\Category::all() as $cat)
                         <option value="{{$cat->id}}">{{$cat->name}}</option>
                     @endforeach
                 </select>&nbsp;&nbsp;

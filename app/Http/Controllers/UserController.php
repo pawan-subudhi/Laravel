@@ -2,7 +2,7 @@
 
 namespace App\Http\Controllers;
 
-use App\Profile;
+use App\Models\Profile;
 use Twilio\Rest\Client;
 use Illuminate\Http\Request;
 use App\Http\Requests\SeekerPostRequest;
@@ -38,7 +38,7 @@ class UserController extends Controller
      * @param  mixed $request
      * @return void
      */
-    public function store(SeekerPostRequest $validationRules){
+    public function store(SeekerPostRequest $request){
 
         $user_id = auth()->user()->id;
         $profile = Profile::where('user_id',$user_id)->first();

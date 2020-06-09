@@ -2,7 +2,7 @@
 
 namespace App\Http\Controllers;
 
-use App\Testimonial;
+use App\Models\Testimonial;
 use Illuminate\Http\Request;
 use App\Http\Requests\TestimonialPostRequest;
 
@@ -38,13 +38,13 @@ class TestimonialController extends Controller
      * @param  mixed $request
      * @return void
      */
-    public function store(TestimonialPostRequest $validationRules, Request $request){
+    public function store(TestimonialPostRequest $request){
         
         Testimonial::create([
-            'content' => $request->get('content'),
-            'name' => $request->get('name'),
-            'profession' => $request->get('profession'),
-            'video_id' => $request->get('video_id'),
+            'content' => request('content'),
+            'name' => request('name'),
+            'profession' => request('profession'),
+            'video_id' => request('video_id'),
         ]);
         return redirect()->back()->with('message','Testimonial created successfully');
     }

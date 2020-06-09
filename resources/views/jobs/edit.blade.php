@@ -51,7 +51,7 @@
                             <label for="category">Category:</label>
                             {{-- we need to get the categories id from the category id --}}
                             <select name="category_id" class="form-control">
-                                @foreach ( App\Category::all() as $cat)
+                                @foreach ( App\Models\Category::all() as $cat)
                                     <option value="{{$cat->id}}" {{$cat->id == $job->category_id ? 'selected':''}}>{{$cat->name}}</option>
                                 @endforeach
                             </select>

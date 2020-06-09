@@ -1,7 +1,9 @@
 <?php
 
 /** @var \Illuminate\Database\Eloquent\Factory $factory */
-use App\User;
+use App\Models\Job;
+use App\Models\User;
+use App\Models\Company;
 use Illuminate\Support\Str;
 use Faker\Generator as Faker;
 
@@ -29,9 +31,9 @@ $factory->define(User::class, function (Faker $faker) {
 });
 
 //Factory for Company database using faker
-$factory->define(App\Company::class, function (Faker $faker) {
+$factory->define(App\Models\Company::class, function (Faker $faker) {
     return [
-        'user_id' => App\User::all()->random()->id,//we get user_id from our Users Model this lines get a random user id from users table
+        'user_id' => App\Models\User::all()->random()->id,//we get user_id from our Users Model this lines get a random user id from users table
         'cname' => $name = $faker->company,
         'slug' => str_slug($name),
         'address' => $faker->address,
@@ -45,10 +47,10 @@ $factory->define(App\Company::class, function (Faker $faker) {
 });
 
 //Factory for Jobs database using faker
-$factory->define(App\Job::class, function (Faker $faker) {
+$factory->define(App\Models\Job::class, function (Faker $faker) {
     return [
-        'user_id' => App\User::all()->random()->id,//we get user_id from our Users Model this lines get a random user id from users table
-        'company_id' => App\Company::all()->random()->id,
+        'user_id' => App\Models\User::all()->random()->id,//we get user_id from our Users Model this lines get a random user id from users table
+        'company_id' => App\Models\Company::all()->random()->id,
         'title' => $title = $faker->text,
         'slug' => str_slug($title),
         'position' => $faker->jobTitle,
@@ -63,29 +65,6 @@ $factory->define(App\Job::class, function (Faker $faker) {
         'experience' => rand(1,10),
         'gender' => $faker->randomElement(['male','female']),
         'salary' => rand(10000,50000),
-
-    ];
-});
-
-//Factory for Testimonies database using faker
-$factory->define(App\Testimonial::class, function (Faker $faker) {
-    return [
-        'content' => $faker->paragraph(rand(40,100)),
-        'name' => 'kumar_Pawan',
-        'profession' => 'Mindfire Intern',
-        'video_id' => 407694202
-
-    ];
-});
-
-//Factory for Testimonies database using faker
-$factory->define(App\Post::class, function (Faker $faker) {
-    return [
-        'title' => $title = $faker->text,
-        'slug' => str_slug($title),
-        'content' => $faker->paragraph(rand(40,100)),
-        'status' => rand(0,1),//0->pending and 1->live
-        'image' => 'man.jpg'
 
     ];
 });

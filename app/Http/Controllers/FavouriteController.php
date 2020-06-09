@@ -2,7 +2,7 @@
 
 namespace App\Http\Controllers;
 
-use App\Job;
+use App\Models\Job;
 
 /**
  * This class is for saving a job and unsaving a job

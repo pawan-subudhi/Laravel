@@ -2,14 +2,14 @@
 
 namespace App\Http\Controllers;
 
-use App\Job;
-use App\Post;
-use App\Company;
-use App\Category;
-use App\Testimonial;
+use App\Models\Job;
+use App\Models\Post;
+use App\Models\Company;
+use App\Models\Category;
+use App\Models\Testimonial;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
-use App\Http\Requests\JobPostRequest;//this contains the validation rules for the job form if we follow this method of validation the pass jobpostrequest as a parameter inside store method
+use App\Http\Requests\JobPostRequest;
 
 /**
  * This class is for CRUD operation related to jobs, handles job recommendation functionality and checks the user is applied for a job or not

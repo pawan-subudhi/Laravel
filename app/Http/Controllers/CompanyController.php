@@ -2,7 +2,7 @@
 
 namespace App\Http\Controllers;
 
-use App\Company;
+use App\Models\Company;
 use Illuminate\Http\Request;
 use App\Http\Requests\CompanyPostRequest;
 
@@ -58,7 +58,7 @@ class CompanyController extends Controller
      * @param  mixed $request
      * @return void
      */
-    public function store(CompanyPostRequest $validationRules, Request $request){
+    public function store(CompanyPostRequest $request){
                
         //$request->get('address') and request('address') are both same
         //to get information of current logged in user is using auth 

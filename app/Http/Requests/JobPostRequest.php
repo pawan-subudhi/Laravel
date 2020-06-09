@@ -25,7 +25,7 @@ class JobPostRequest extends FormRequest
     {
         return [
             'title' => 'required|min:10',
-            'description' => 'required',
+            'description' => 'required|string',
             'roles' => 'required',
             'address' => 'required',
             'position' => 'required',

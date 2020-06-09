@@ -2,8 +2,8 @@
 
 namespace App\Http\Controllers;
 
-use App\User;
-use App\Company;
+use App\Models\User;
+use App\Models\Company;
 use Illuminate\Support\Facades\Hash;
 use App\Http\Requests\EmployerRegisterPostRequest;
 
@@ -20,7 +20,7 @@ class EmployerRegisterController extends Controller
      * @param  mixed $request
      * @return void
      */
-    public function employerRegister(EmployerRegisterPostRequest $validationRules){
+    public function employerRegister(EmployerRegisterPostRequest $request){
     
         $user = User::create([
             'email' => request('email'),

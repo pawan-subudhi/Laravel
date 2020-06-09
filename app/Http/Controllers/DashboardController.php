@@ -2,8 +2,8 @@
 
 namespace App\Http\Controllers;
 
-use App\Job;
-use App\Post;
+use App\Models\Job;
+use App\Models\Post;
 use Illuminate\Http\Request;
 use App\Http\Requests\DashboardPostRequest;
 
@@ -40,7 +40,7 @@ class DashboardController extends Controller
      * @param  mixed $request
      * @return void
      */
-    public function store(DashboardPostRequest $validationRules, Request $request){
+    public function store(DashboardPostRequest $request){
 
         if($request->hasFile('image')){
             $file = $request->file('image');
