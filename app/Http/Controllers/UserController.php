@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Models\Profile;
 use Twilio\Rest\Client;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Config;
 use App\Http\Requests\SeekerPostRequest;
 
 /**
@@ -48,7 +49,7 @@ class UserController extends Controller
                 'experience' => request('experience'),
                 'bio' => request('bio'),
             ]);
-            return redirect()->back()->with('message','Profile successfully Updated!');
+            return redirect()->back()->with('message',Config::get('constants.seeker.seeker_info'));
         } else {
             $profile = Profile::where('phone_number',request('phone_number'))->first();
             if(!$profile || $profile->user_id == $user_id){
@@ -68,9 +69,9 @@ class UserController extends Controller
                     'bio' => request('bio'),
                     'phone_number' => request('phone_number'),
                 ]);
-                return redirect()->back()->with(['message'=>'Number need to be verified!','phone_number' => request('phone_number')]);
+                return redirect()->back()->with(['message'=>Config::get('constants.seeker.number_verified'),'phone_number' => request('phone_number')]);
             } else {
-                return redirect()->back()->with('message','Number is already taken!');
+                return redirect()->back()->with('message',Config::get('constants.seeker.number_taken'));
             }   
         }
     }
@@ -98,9 +99,9 @@ class UserController extends Controller
         if ($verification->valid) {
             tap(Profile::where('phone_number', request('phone_number')))->update(['isVerified' => true]);
             /* Authenticate user */
-            return redirect()->back()->with('message','Phone number verified');
+            return redirect()->back()->with('message',Config::get('constants.seeker.complete_seeker_update'));
         } else {
-            return redirect()->back()->with('message','Wrong OTP enetered!');
+            return redirect()->back()->with('message',Config::get('constants.seeker.wrong_otp'));
         }
     }
     
@@ -121,7 +122,7 @@ class UserController extends Controller
         Profile::where('user_id',$user_id)->update([
             'cover_letter' => $cover,
         ]);
-        return redirect()->back()->with('message','Cover letter successfully Updated!');
+        return redirect()->back()->with('message',Config::get('constants.seeker.cover_letter'));
     }
     
     /**
@@ -141,7 +142,7 @@ class UserController extends Controller
         Profile::where('user_id',$user_id)->update([
             'resume' => $resume,
         ]);
-        return redirect()->back()->with('message','Resume successfully Updated!');
+        return redirect()->back()->with('message',Config::get('constants.seeker.resume'));
     }
     
     /**
@@ -164,7 +165,7 @@ class UserController extends Controller
             Profile::where('user_id',$user_id)->update([
                 'avatar' => $filename,
             ]);
-            return redirect()->back()->with('message','Profile picture successfully Updated!');
+            return redirect()->back()->with('message',Config::get('constants.seeker.profile_pic'));
         }
     }
 }

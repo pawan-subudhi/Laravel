@@ -14,7 +14,7 @@ class CommentController extends Controller
 {
         
     /**
-     * store
+     * storing the comments
      *
      * @param  mixed $request
      * @return void

@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Models\Job;
 use App\Models\Post;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Config;
 use App\Http\Requests\DashboardPostRequest;
 
 /**
@@ -54,7 +55,7 @@ class DashboardController extends Controller
                'status' => $request->get('status'),
             ]);
         }
-        return redirect('/dashboard')->with('message','Post created successfully');
+        return redirect('/dashboard')->with('message',Config::get('constants.admin.post_info'));
     }
 
     /**
@@ -97,7 +98,7 @@ class DashboardController extends Controller
                 'status' => $request->get('status'),
              ]);
         }
-        return redirect()->back()->with('message','Post updated successfully');
+        return redirect()->back()->with('message',Config::get('constants.admin.post_update'));
     }
 
     /**
@@ -110,7 +111,7 @@ class DashboardController extends Controller
         $id = $request->get('id');
         $post = Post::find($id);
         $post->delete();
-        return redirect()->back()->with('message','Post deleted successfully');
+        return redirect()->back()->with('message',Config::get('constants.admin.post_delete'));
     }
     
     /**
@@ -133,7 +134,7 @@ class DashboardController extends Controller
     public function restore($id){
         //restore() is used to get back the deleted items
         $posts = Post::onlyTrashed()->where('id',$id)->restore();
-        return redirect()->back()->with('message','Post restored successfully');
+        return redirect()->back()->with('message',Config::get('constants.admin.post_restore'));
     }
    
     /**
@@ -146,7 +147,7 @@ class DashboardController extends Controller
         $post = Post::find($id);
         $post->status = !$post->status;
         $post->save();
-        return redirect()->back()->with('message','Status updated successfully');
+        return redirect()->back()->with('message',Config::get('constants.admin.post_status'));
     }
 
     /**
@@ -180,6 +181,6 @@ class DashboardController extends Controller
         $job = Job::find($id);
         $job->status = !$job->status;
         $job->save();
-        return redirect()->back()->with('message','Status updated successfully');
+        return redirect()->back()->with('message',Config::get('constants.admin.post_status'));
     }
 }

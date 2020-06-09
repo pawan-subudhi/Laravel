@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Models\User;
 use App\Models\Company;
 use Illuminate\Support\Facades\Hash;
+use Illuminate\Support\Facades\Config;
 use App\Http\Requests\EmployerRegisterPostRequest;
 
 /**
@@ -38,6 +39,6 @@ class EmployerRegisterController extends Controller
         $user->sendEmailVerificationNotification();//laravel uses this to send the email verification notification we are using this here because this php file is custom i.e. build by us so we have to use here
         
         // redirect to login page to login 
-        return redirect()->back()->with('message','Please verify your email by clicking the link sent to your email address');
+        return redirect()->back()->with('message',Config::get('constants.employer.account_verify'));
     }
 }

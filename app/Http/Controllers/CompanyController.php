@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Models\Company;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Config;
 use App\Http\Requests\CompanyPostRequest;
 
 /**
@@ -71,7 +72,7 @@ class CompanyController extends Controller
             'description'=> $request->get('description'),
           
         ]);
-        return redirect()->back()->with('message','Company successfully Updated!');
+        return redirect()->back()->with('message',Config::get('constants.company.company_info'));
     }
     
     /**
@@ -93,7 +94,7 @@ class CompanyController extends Controller
             Company::where('user_id',$user_id)->update([
                 'cover_photo' => $filename,
             ]);
-            return redirect()->back()->with('message','Company cover photo successfully Updated!');
+            return redirect()->back()->with('message',Config::get('constants.company.company_cover_photo'));
         }
     }
     
@@ -116,7 +117,7 @@ class CompanyController extends Controller
             Company::where('user_id',$user_id)->update([
                 'logo' => $filename,
             ]);
-            return redirect()->back()->with('message','Company logo successfully Updated!');
+            return redirect()->back()->with('message',Config::get('constants.company.company_logo'));
         }
     }
 }

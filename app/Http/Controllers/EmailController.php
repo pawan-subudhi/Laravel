@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Mail\SendJob;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Mail;
+use Illuminate\Support\Facades\Config;
 
 /**
  * This class is for sending a job mail 
@@ -35,9 +36,9 @@ class EmailController extends Controller
         $emailTo = $request->get('friend_email');
         try{
             Mail::to($emailTo)->send(new SendJob($data));
-            return redirect()->back()->with('message','Job Sent to '.$emailTo);
+            return redirect()->back()->with('message',Config::get('constants.email.send_success').$emailTo);
         } catch(\Exception $e){
-            return redirect()->back()->with('err_message','Sorry, Something Went Wrong.Please try later');
+            return redirect()->back()->with('err_message',Config::get('constants.email.send_failure'));
         }
     }
 }

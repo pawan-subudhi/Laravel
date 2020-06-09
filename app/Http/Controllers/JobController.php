@@ -10,6 +10,7 @@ use App\Models\Testimonial;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use App\Http\Requests\JobPostRequest;
+use Illuminate\Support\Facades\Config;
 
 /**
  * This class is for CRUD operation related to jobs, handles job recommendation functionality and checks the user is applied for a job or not
@@ -131,7 +132,7 @@ class JobController extends Controller
     public function update(Request $request,$id){
         $job = Job::findOrFail($id);
         $job->update($request->all());
-        return redirect()->back()->with('message','Job successfully updated');
+        return redirect()->back()->with('message',Config::get('constants.job.job_update'));
     }
         
     /**
@@ -171,17 +172,16 @@ class JobController extends Controller
             'experience' => request('experience'),
             'salary' => request('salary'),
         ]);
-        return redirect()->back()->with('message','Job posted successfully!');
+        return redirect()->back()->with('message',Config::get('constants.job.job_info'));
     }
     
     /**
      * apply job
      *
-     * @param  mixed $request
      * @param  int $id
      * @return bool
      */
-    public function apply(Request $request,$id){
+    public function apply($id){
         $jobId = Job::find($id);
         //attach the logged in user id
         $jobId->users()->attach(Auth::user()->id);

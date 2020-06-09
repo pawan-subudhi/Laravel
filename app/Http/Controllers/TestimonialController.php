@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Models\Testimonial;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Config;
 use App\Http\Requests\TestimonialPostRequest;
 
 /**
@@ -46,6 +47,6 @@ class TestimonialController extends Controller
             'profession' => request('profession'),
             'video_id' => request('video_id'),
         ]);
-        return redirect()->back()->with('message','Testimonial created successfully');
+        return redirect()->back()->with('message',Config::get('constants.admin.testimonial_info'));
     }
 }
