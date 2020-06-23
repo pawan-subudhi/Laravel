@@ -20,6 +20,7 @@ return [
     ],
     'employer' => [
         'account_verify' => 'Please verify your email by clicking the link sent to your email address',
+        'account_verify_error' => 'Something went wrong!! Please try again later',
     ],
     'seeker' => [
         'seeker_info' => 'Profile successfully Updated!',

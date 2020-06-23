@@ -74,7 +74,6 @@
 <script src="{{asset('external/js/jquery.stellar.min.js')}}"></script>
 <script src="{{asset('external/js/jquery.countdown.min.js')}}"></script>
 <script src="{{asset('external/js/jquery.magnific-popup.min.js')}}"></script>
-<script src="{{asset('external/js/bootstrap-datepicker.min.js')}}"></script>
 <script src="{{asset('external/js/aos.js')}}"></script>
 
 

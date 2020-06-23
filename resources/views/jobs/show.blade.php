@@ -19,7 +19,7 @@
             </div>
         @endif
 
-        <div class="row" id="app">
+        <div class="row">
             <div class="title" style="margin-top: 20px;">
                 <h2>{{$job->title}}</h2> 
             </div>
